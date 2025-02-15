@@ -1,38 +1,629 @@
-.App {
-  text-align: center;
+/* ============================ */
+/* Global y Fondo de Escritorio (Desktop) */
+/* ============================ */
+body {
+  background-image: url('img/linux.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* =================== */
+/* Íconos / Botones del Escritorio (Desktop) */
+/* =================== */
+#desktop {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  gap: 20px;
+  z-index: 50;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Botón base */
+.button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.3em;
+  height: 5.3em;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.4em;
+  background: rgba(235, 252, 254, 0.8);
+  outline: none;
+  transition: background 0.3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.button:hover {
+  background: rgba(235, 252, 254, 1);
+}
+
+/* Contenedor interno */
+.container {
+  position: relative;
+  width: 3.5em;
+  height: 3.1em;
+  background: none;
+  overflow: hidden;
+}
+
+/* Ícono de Terminal */
+.terminal-icon {
+  width: 3em;
+  height: 2em;
+  background: #000;
+  border: 2px solid #4caf50;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.terminal-icon .prompt {
+  font-family: monospace;
+  color: #4caf50;
+  font-size: 1.2em;
+}
+
+/* Ícono de Ayuda */
+.help-icon {
+  width: 2.1em;
+  height: 2.1em;
+  background: #f39c12;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #fff;
+}
+
+.help-icon .question-mark {
+  font-family: Arial, sans-serif;
+}
+
+/* Ícono de Carpeta (Explorador) */
+.folder {
+  position: absolute;
+}
+
+.folder_one {
+  bottom: 0;
+  width: 100%;
+  height: 88%;
+  border-radius: 3px;
+  border-top: 2px solid rgb(206, 167, 39);
+  background: linear-gradient(-35deg, rgb(238, 194, 47) 5%, rgb(255, 223, 118));
+}
+
+.folder_two {
+  top: 5%;
+  width: 38%;
+  height: 19%;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-color: rgb(206, 167, 39);
+  box-shadow: 0 1px 5px -2px rgba(0, 0, 0, 0.5);
+}
+
+.folder_two::before {
+  content: "";
+  position: absolute;
+  left: 88%;
+  width: 0;
+  height: 0;
+  border-left: 7px solid rgb(206, 167, 39);
+  border-top: 0.3em solid transparent;
+  border-bottom: 0.3em solid transparent;
+}
+
+.folder_three {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0.5em;
+  bottom: 0;
+  width: 2.5em;
+  height: 0.9em;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(-35deg, rgb(25, 102, 218), rgb(109, 165, 249));
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.folder_four {
+  left: 1em;
+  bottom: 0.3em;
+  width: 1.5em;
+  height: 0.18em;
+  border-radius: 1em;
+  background-color: rgb(20, 77, 163);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ícono para Notas */
+.note-icon {
+  width: 3em;
+  height: 3em;
+  background: #ffeb3b;
+  border: 2px solid #fbc02d;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-icon .note-letter {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #333;
+}
+
+/* Efecto de línea activa */
+.active_line {
+  position: absolute;
+  bottom: 0;
+  width: 0.9em;
+  height: 0.4em;
+  background-color: #999;
+  border-radius: 1em;
+  transition: all 0.15s linear;
+}
+
+.button:active .active_line,
+.button:focus .active_line {
+  width: 2.3em;
+  background-color: rgb(41, 126, 255);
+}
+
+/* Tooltip de texto */
+.text {
+  position: absolute;
+  top: -4.5em;
+  width: 7.7em;
+  height: 2.6em;
+  background-color: #666;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  text-shadow: 0 0 10px rgb(0, 0, 0);
+  opacity: 0;
+  transition: all 0.25s linear;
+}
+
+.button:hover .text {
+  opacity: 1;
+}
+
+/* ======================= */
+/* Contenedor de Ventanas (Desktop) */
+/* ======================= */
+#window-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===================== */
+/* Ventanas: Terminal, Explorador, Ayuda, etc. (Desktop) */
+/* ===================== */
+
+/* Estilo base para ventanas tipo "card" */
+.window {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #666;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  border-radius: 5px;
+  z-index: 100;
+}
+
+/* Encabezado para la Terminal */
+.terminal-toolbar {
+  background-color: #212121;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: move;
+}
+
+.toolbar-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 5px;
+}
+
+.circle-12 {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.circle-12.red {
+  background: #ee411a;
+}
+
+.circle-12.yellow {
+  background: #f9c74f;
+}
+
+.circle-12.green {
+  background: #90be6d;
+}
+
+.terminal-title {
+  color: #d5d0ce;
+  font-size: 14px;
+}
+
+.terminal-body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 10px;
+  height: calc(100% - 40px);
+  overflow-y: auto;
+}
+
+.prompt {
+  color: #00ff00;
+  margin-right: 5px;
+}
+
+.typed-command {
+  color: #fff;
+}
+
+.command-line {
+  display: flex;
+  align-items: center;
+}
+
+.command-line input[type="text"] {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: inherit;
+  width: 90%;
+}
+
+/* Ventanas tipo Card (Desktop) */
+.card {
+  width: 600px;
+  height: 400px;
+  background-color: #F8FBFE;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  z-index: 200;
+  overflow: hidden;
+}
+
+/* Barra de herramientas (arrastrable) */
+.tools {
+  display: flex;
+  align-items: center;
+  padding: 9px;
+  cursor: move;
+}
+
+.tools .circle {
+  padding: 0 4px;
+}
+
+.box {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.box.red {
+  background-color: #ff605c;
+}
+.box.yellow {
+  background-color: #ffbd44;
+}
+.box.green {
+  background-color: #00ca4e;
+}
+
+/* Contenido interno de la ventana */
+.card__content {
+  width: 100%;
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* ===================== */
+/* Estilos para el Explorador (Desktop) */
+/* ===================== */
+.explorer-body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 15px;
+}
+
+.explorer-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100px;
+  height: 100px;
+  text-align: center;
 }
 
-.App-link {
-  color: #61dafb;
+.explorer-item.folder {
+  background-image: url('img/carpetaicon.png');
+  background-size: 50px 50px;
+  background-repeat: no-repeat;
+  background-position: center top;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.explorer-item.file {
+  background-image: url('img/txt.png');
+  background-size: 50px 50px;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+.explorer-item span {
+  display: block;
+  margin-top: 60px;
+  font-size: 0.9em;
+  color: #333;
+  word-wrap: break-word;
+  word-break: break-all;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===================== */
+/* Ventana de Ayuda (Desktop) */
+/* ===================== */
+.help-body {
+  background-color: transparent;
+  height: 100%;
+  color: #333;
+  font-family: Arial, sans-serif;
+  overflow-y: auto;
+}
+
+.help-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.help-body li {
+  margin-bottom: 5px;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+
+.help-body li:hover {
+  background-color: #e0e0e0;
+}
+
+/* ===================== */
+/* Sticky Notes (Desktop) */
+/* ===================== */
+.note-window {
+  width: 250px;
+  min-height: 150px;
+  background-color: #fff9c4;
+  border: 1px solid #f0e68c;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+  z-index: 300;
+}
+
+.note-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fdd835;
+  padding: 5px 8px;
+  cursor: move;
+}
+
+.note-tools .note-title {
+  font-weight: bold;
+  font-size: 0.95em;
+  color: #333;
+}
+
+.note-tools .note-close {
+  width: 15px;
+  height: 15px;
+  background-color: #e53935;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.note-content {
+  padding: 10px;
+  font-size: 0.9em;
+  color: #555;
+  white-space: pre-line;
+}
+
+/* ============================ */
+/* MEDIA QUERIES: Solo para dispositivos móviles */
+/* ============================ */
+
+/* Tablets (hasta 768px) */
+@media (max-width: 768px) {
+  /* Reubicar íconos en la parte inferior central */
+  #desktop {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-wrap: wrap;
+    gap: 10px;
   }
-  to {
-    transform: rotate(360deg);
+  .button {
+    width: 4.5em;
+    height: 4.5em;
+  }
+  .container {
+    width: 2.8em;
+    height: 2.5em;
+  }
+  .terminal-icon {
+    width: 2.5em;
+    height: 1.5em;
+    border-width: 1px;
+  }
+  .terminal-icon .prompt {
+    font-size: 0.9em;
+  }
+  .help-icon,
+  .note-icon {
+    width: 1.8em;
+    height: 1.8em;
+    font-size: 1.2em;
+  }
+  .note-icon .note-letter {
+    font-size: 1.2em;
+  }
+  .active_line {
+    width: 0.7em;
+    height: 0.3em;
+  }
+  .button:active .active_line,
+  .button:focus .active_line {
+    width: 1.8em;
+  }
+  /* Ventanas se adaptan */
+  .window,
+  .card {
+    width: 90%;
+    height: 70vh;
+    left: 5%;
+    top: 15vh;
+  }
+  .card__content {
+    padding: 5px;
+  }
+  .explorer-item {
+    width: 70px;
+    height: 70px;
+  }
+  .explorer-item span {
+    font-size: 0.8em;
+    margin-top: 50px;
+    max-width: 70px;
+  }
+  .note-window {
+    width: 90%;
+    min-height: 100px;
+  }
+  .note-tools {
+    padding: 4px 6px;
+  }
+  .note-content {
+    padding: 8px;
+    font-size: 0.8em;
+  }
+}
+
+/* Móviles (hasta 480px) */
+@media (max-width: 480px) {
+  /* Íconos: disposición vertical y centrados en la parte inferior */
+  #desktop {
+    flex-direction: column;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .button {
+    width: 4em;
+    height: 4em;
+  }
+  .container {
+    width: 2.5em;
+    height: 2.2em;
+  }
+  .terminal-icon {
+    width: 2em;
+    height: 1.2em;
+    border-width: 1px;
+  }
+  .terminal-icon .prompt {
+    font-size: 0.8em;
+  }
+  .help-icon,
+  .note-icon {
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 1em;
+  }
+  .note-icon .note-letter {
+    font-size: 1em;
+  }
+  .active_line {
+    width: 0.6em;
+    height: 0.25em;
+  }
+  .button:active .active_line,
+  .button:focus .active_line {
+    width: 1.5em;
+  }
+  /* Ventanas casi a pantalla completa */
+  .window,
+  .card {
+    width: 95%;
+    height: 75vh;
+    left: 2.5%;
+    top: 10vh;
+  }
+  .card__content {
+    padding: 4px;
+  }
+  .explorer-item {
+    width: 60px;
+    height: 60px;
+  }
+  .explorer-item span {
+    font-size: 0.7em;
+    margin-top: 45px;
+    max-width: 60px;
+  }
+  .note-window {
+    width: 95%;
+    min-height: 90px;
+  }
+  .note-tools {
+    padding: 3px 5px;
+  }
+  .note-content {
+    padding: 6px;
+    font-size: 0.7em;
   }
 }
