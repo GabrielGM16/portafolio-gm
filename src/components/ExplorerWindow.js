@@ -32,31 +32,32 @@ function ExplorerWindow({ id, closeWindow }) {
 
   // Estado local para la ruta actual en el explorador
   const [explorerPath, setExplorerPath] = useState(["home"]);
-  // Estado para forzar re-render cuando la ruta cambie
+  // Estado para la lista de items (archivos/carpetas)
   const [items, setItems] = useState([]);
 
+  // Efecto: Hacer draggable la ventana (se ejecuta solo una vez al montar)
   useEffect(() => {
     if (explorerRef.current && toolbarRef.current) {
       makeDraggable(explorerRef.current, toolbarRef.current);
+      console.log("Draggable attached to ExplorerWindow");
     }
-    // Cada vez que el componente se monte o se actualice la ruta, actualizamos el contenido
+  }, []);
+
+  // Efecto: Actualizar los items cada vez que cambie la ruta
+  useEffect(() => {
     updateExplorerBody();
-    // eslint-disable-next-line
   }, [explorerPath]);
 
-  // Función para actualizar la lista de items (archivos y carpetas)
+  // Actualiza la lista de items en función de la ruta actual
   function updateExplorerBody() {
     const dir = getDirectory(explorerPath);
     if (!dir) return;
 
-    // Creamos un array de nombres de archivos/carpetas
     const entries = [];
-
     // Si no estamos en la raíz, agregamos un item para subir un nivel
     if (explorerPath.length > 1) {
       entries.push({ name: "..", isFolder: true, isUp: true });
     }
-
     // Agregamos los items del directorio actual
     for (const key in dir) {
       if (typeof dir[key] === "object") {
@@ -68,19 +69,18 @@ function ExplorerWindow({ id, closeWindow }) {
     setItems(entries);
   }
 
-  // Función para manejar clic en un item (carpeta o archivo)
+  // Maneja el clic en un item (carpeta o archivo)
   function handleItemClick(item) {
-    // Si es "..", subimos un nivel
     if (item.isUp) {
+      // Subir un nivel
       setExplorerPath((prev) => prev.slice(0, prev.length - 1));
       return;
     }
-    // Si es carpeta, bajamos a ese subdirectorio
     if (item.isFolder) {
+      // Bajar a la carpeta seleccionada
       setExplorerPath((prev) => [...prev, item.name]);
     } else {
-      // Si es archivo, abrimos su contenido
-      // Aquí podrías usar openFileWindow(item.name, item.content) en lugar de alert
+      // Si es archivo, abrir su contenido (puedes reemplazar alert por otra lógica)
       alert(`Contenido de ${item.name}:\n\n${item.content}`);
     }
   }
@@ -92,13 +92,10 @@ function ExplorerWindow({ id, closeWindow }) {
       ref={explorerRef}
       style={{ top: "150px", left: "150px", zIndex: 200 }}
     >
-      {/* Barra superior */}
-      <div className="tools" ref={toolbarRef}>
+      {/* Barra superior: este es el handle para arrastrar */}
+      <div className="tools" ref={toolbarRef} style={{ cursor: "move" }}>
         <div className="circle">
-          <span
-            className="box red"
-            onClick={() => closeWindow(id)}
-          ></span>
+          <span className="box red" onClick={() => closeWindow(id)}></span>
         </div>
         <div className="circle">
           <span className="box yellow"></span>
