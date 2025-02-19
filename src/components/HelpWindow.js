@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { makeDraggable } from '../utils/draggable';
+import React, { useEffect, useRef } from "react";
+import { makeDraggable } from "../utils/draggable";
 
-// Lista de comandos
+// Lista de comandos disponibles
 const commandsList = [
   "ls - listar directorio",
   "cd <directorio> - cambiar directorio",
@@ -12,83 +12,86 @@ const commandsList = [
   "projects - mis proyectos",
   "contact - información de contacto",
   "clear - limpiar terminal",
-  "help - mostrar esta ayuda"
+  "help - mostrar esta ayuda",
 ];
+
+let currentZIndex = 200; // Control global del Z-Index
 
 function HelpWindow({ id, closeWindow, openTerminalWindow }) {
   const helpRef = useRef(null);
   const toolbarRef = useRef(null);
 
   useEffect(() => {
-    // Permite arrastrar la ventana
     if (helpRef.current && toolbarRef.current) {
       makeDraggable(helpRef.current, toolbarRef.current);
     }
+    bringToFront();
   }, []);
 
-  // Lógica al hacer clic en un comando
+  // Lleva la ventana al frente cuando se hace clic en ella
+  function bringToFront() {
+    if (helpRef.current) {
+      helpRef.current.style.zIndex = ++currentZIndex;
+    }
+  }
+
+  // Lógica para manejar el clic en los comandos
   const handleCommandClick = (cmd) => {
-    // Intentamos encontrar la ventana de la Terminal
     const termWindow = document.getElementById("terminal-window");
-    
+
     if (!termWindow) {
-      // Si no está abierta, la abrimos
       if (openTerminalWindow) {
-        openTerminalWindow(); // Llamada a la función que abre la Terminal
+        openTerminalWindow();
       }
-      // Esperamos un momento a que se monte la Terminal y creamos el input
       setTimeout(() => {
         const inputField = document.querySelector(".commandInput");
         if (inputField) {
-          // Tomamos la primera palabra del comando (por ejemplo, "ls")
           inputField.value = cmd.split(" ")[0];
           inputField.focus();
         }
       }, 300);
     } else {
-      // Si la Terminal ya está abierta, solo ajustamos el input
       const inputField = termWindow.querySelector(".commandInput");
       if (inputField) {
         inputField.value = cmd.split(" ")[0];
         inputField.focus();
       }
+      termWindow.style.zIndex = ++currentZIndex;
     }
   };
 
   return (
     <div
-      className="card"
-      id="help-card"
+      className="window help-window"
       ref={helpRef}
-      style={{ top: "200px", left: "200px", zIndex: 200 }}
+      style={{
+        top: "200px",
+        left: "200px",
+        width: "400px",
+        height: "300px",
+        zIndex: currentZIndex,
+      }}
+      onMouseDown={bringToFront}
     >
-      {/* Barra superior con los "semáforos" */}
-      <div className="tools" ref={toolbarRef}>
-        <div className="circle">
-          <span
-            className="box red"
-            onClick={() => closeWindow(id)}
-          ></span>
+      {/* Barra superior */}
+      <div className="toolbar" ref={toolbarRef}>
+        <div className="button-group">
+          <div className="circle-12 red" onClick={() => closeWindow(id)}></div>
+          <div className="circle-12 yellow"></div>
+          <div className="circle-12 green"></div>
         </div>
-        <div className="circle">
-          <span className="box yellow"></span>
-        </div>
-        <div className="circle">
-          <span className="box green"></span>
-        </div>
+        <span className="window-title">Ayuda</span>
       </div>
 
-      {/* Contenido principal */}
-      <div className="card__content">
-        <div className="help-body">
-          <ul>
-            {commandsList.map((cmd, index) => (
-              <li key={index} onClick={() => handleCommandClick(cmd)}>
-                {cmd}
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* Cuerpo de la ventana de ayuda */}
+      <div className="help-body">
+        <ul>
+          {commandsList.map((cmd, index) => (
+            <li key={index} onClick={() => handleCommandClick(cmd)}>
+              {cmd}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

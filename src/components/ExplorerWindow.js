@@ -1,19 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { makeDraggable } from '../utils/draggable';
+import React, { useEffect, useRef, useState } from "react";
+import { makeDraggable } from "../utils/draggable";
 
-// Sistema de archivos de ejemplo
+// Sistema de archivos
 const fileSystem = {
   home: {
     "about.txt": "Soy Martin Gabriel Godinez Morales, desarrollador de software.",
     projects: {
       "project1.txt": "Descripción del proyecto 1",
-      "project2.txt": "Descripción del proyecto 2"
+      "project2.txt": "Descripción del proyecto 2",
     },
-    "contact.txt": "gmoficial16@gmail.com"
-  }
+    "contact.txt": "gmoficial16@gmail.com",
+  },
 };
 
-// Función para navegar en el sistema de archivos
+// Utilidad para obtener el directorio según la ruta actual
 function getDirectory(pathArray) {
   let dir = fileSystem;
   for (let i = 0; i < pathArray.length; i++) {
@@ -26,39 +26,41 @@ function getDirectory(pathArray) {
   return dir;
 }
 
+let currentZIndex = 200; // Manejo de apilamiento dinámico
+
 function ExplorerWindow({ id, closeWindow }) {
   const explorerRef = useRef(null);
   const toolbarRef = useRef(null);
 
-  // Estado local para la ruta actual en el explorador
   const [explorerPath, setExplorerPath] = useState(["home"]);
-  // Estado para la lista de items (archivos/carpetas)
   const [items, setItems] = useState([]);
 
-  // Efecto: Hacer draggable la ventana (se ejecuta solo una vez al montar)
   useEffect(() => {
     if (explorerRef.current && toolbarRef.current) {
       makeDraggable(explorerRef.current, toolbarRef.current);
-      console.log("Draggable attached to ExplorerWindow");
     }
+    bringToFront(); // Asegurar que inicia en el frente
   }, []);
 
-  // Efecto: Actualizar los items cada vez que cambie la ruta
   useEffect(() => {
     updateExplorerBody();
   }, [explorerPath]);
 
-  // Actualiza la lista de items en función de la ruta actual
+  function bringToFront() {
+    if (explorerRef.current) {
+      explorerRef.current.style.zIndex = ++currentZIndex;
+    }
+  }
+
   function updateExplorerBody() {
     const dir = getDirectory(explorerPath);
     if (!dir) return;
-
     const entries = [];
-    // Si no estamos en la raíz, agregamos un item para subir un nivel
+
     if (explorerPath.length > 1) {
       entries.push({ name: "..", isFolder: true, isUp: true });
     }
-    // Agregamos los items del directorio actual
+
     for (const key in dir) {
       if (typeof dir[key] === "object") {
         entries.push({ name: key, isFolder: true, content: dir[key] });
@@ -69,55 +71,52 @@ function ExplorerWindow({ id, closeWindow }) {
     setItems(entries);
   }
 
-  // Maneja el clic en un item (carpeta o archivo)
   function handleItemClick(item) {
     if (item.isUp) {
-      // Subir un nivel
       setExplorerPath((prev) => prev.slice(0, prev.length - 1));
       return;
     }
     if (item.isFolder) {
-      // Bajar a la carpeta seleccionada
       setExplorerPath((prev) => [...prev, item.name]);
     } else {
-      // Si es archivo, abrir su contenido (puedes reemplazar alert por otra lógica)
       alert(`Contenido de ${item.name}:\n\n${item.content}`);
     }
   }
 
   return (
     <div
-      className="card"
-      id="explorer-card"
+      className="window explorer-window"
       ref={explorerRef}
-      style={{ top: "150px", left: "150px", zIndex: 200 }}
+      style={{
+        top: "150px",
+        left: "150px",
+        width: "500px",
+        height: "350px",
+        zIndex: currentZIndex,
+      }}
+      onMouseDown={bringToFront}
     >
-      {/* Barra superior: este es el handle para arrastrar */}
-      <div className="tools" ref={toolbarRef} style={{ cursor: "move" }}>
-        <div className="circle">
-          <span className="box red" onClick={() => closeWindow(id)}></span>
+      {/* Barra superior */}
+      <div className="toolbar" ref={toolbarRef}>
+        <div className="button-group">
+          <div className="circle-12 red" onClick={() => closeWindow(id)}></div>
+          <div className="circle-12 yellow"></div>
+          <div className="circle-12 green"></div>
         </div>
-        <div className="circle">
-          <span className="box yellow"></span>
-        </div>
-        <div className="circle">
-          <span className="box green"></span>
-        </div>
+        <span className="window-title">Explorador de Archivos</span>
       </div>
 
-      {/* Contenido principal */}
-      <div className="card__content">
-        <div className="explorer-body">
-          {items.map((item, index) => (
-            <div
-              key={index}
-              className={`explorer-item ${item.isFolder ? "folder" : "file"}`}
-              onClick={() => handleItemClick(item)}
-            >
-              <span>{item.name}</span>
-            </div>
-          ))}
-        </div>
+      {/* Cuerpo del explorador */}
+      <div className="explorer-body">
+        {items.map((item, index) => (
+          <div
+            key={index}
+            className={`explorer-item ${item.isFolder ? "folder" : "file"}`}
+            onClick={() => handleItemClick(item)}
+          >
+            <span>{item.name}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
