@@ -120,7 +120,7 @@ export const ModalManagerProvider = ({ children }) => {
       case 'textEditor':
         ComponentToRender = TextEditorWindow;
         break;
-      case 'settings':
+      case 'applications':
         ComponentToRender = ApplicationsWindow;
         break;
       case 'about':
