@@ -1,34 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Desktop from './components/Desktop';
-import WindowContainer from './components/WindowContainer';
+import WindowManager from './components/WindowManager';
+
+// Context Providers
+import { ThemeProvider } from './contexts/ThemeContext';
+import { WindowManagerProvider } from './contexts/WindowManagerContext';
+import { FileSystemProvider } from './contexts/FileSystemContext';
+import { ApplicationProvider } from './contexts/ApplicationContext';
+import { TerminalProvider } from './contexts/TerminalContext';
+
 import './App.css';
 
-
 function App() {
-  // Este estado maneja las ventanas abiertas.
-  const [windows, setWindows] = useState([]);
-
-  // Función para abrir una ventana. "type" puede ser "terminal", "explorer", "help", "note", etc.
-  const openWindow = (type, props = {}) => {
-    setWindows((prev) => [
-      ...prev,
-      { type, props, id: Date.now() + Math.random() },
-    ]);
-  };
-
-  // Función para cerrar una ventana por su id.
-  const closeWindow = (id) => {
-    setWindows((prev) => prev.filter((win) => win.id !== id));
-  };
-
   return (
-    <div className="App">
-      {/* El escritorio con los íconos */}
-      <Desktop openWindow={openWindow} />
+    <ThemeProvider>
+      <ApplicationProvider>
+        <FileSystemProvider>
+          <TerminalProvider>
+            <WindowManagerProvider>
+              <div className="App min-h-screen bg-gradient-to-br from-ubuntu-orange-light to-ubuntu-purple-light dark:from-ubuntu-dark-bg dark:to-ubuntu-dark-surface transition-colors duration-300">
+                {/* El escritorio con los íconos */}
+                <Desktop />
 
-      {/* Contenedor para las ventanas */}
-      <WindowContainer windows={windows} closeWindow={closeWindow} openWindow={openWindow} />
-    </div>
+                {/* Contenedor para las ventanas */}
+                <WindowManager />
+              </div>
+            </WindowManagerProvider>
+          </TerminalProvider>
+        </FileSystemProvider>
+      </ApplicationProvider>
+    </ThemeProvider>
   );
 }
 

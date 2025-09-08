@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { makeDraggable } from "../utils/draggable";
 
 // Sistema de archivos
@@ -35,24 +35,13 @@ function ExplorerWindow({ id, closeWindow }) {
   const [explorerPath, setExplorerPath] = useState(["home"]);
   const [items, setItems] = useState([]);
 
-  useEffect(() => {
-    if (explorerRef.current && toolbarRef.current) {
-      makeDraggable(explorerRef.current, toolbarRef.current);
-    }
-    bringToFront(); // Asegurar que inicia en el frente
-  }, []);
-
-  useEffect(() => {
-    updateExplorerBody();
-  }, [explorerPath]);
-
-  function bringToFront() {
+  const bringToFront = useCallback(() => {
     if (explorerRef.current) {
       explorerRef.current.style.zIndex = ++currentZIndex;
     }
-  }
+  }, []);
 
-  function updateExplorerBody() {
+  const updateExplorerBody = useCallback(() => {
     const dir = getDirectory(explorerPath);
     if (!dir) return;
     const entries = [];
@@ -69,7 +58,18 @@ function ExplorerWindow({ id, closeWindow }) {
       }
     }
     setItems(entries);
-  }
+  }, [explorerPath]);
+
+  useEffect(() => {
+    if (explorerRef.current && toolbarRef.current) {
+      makeDraggable(explorerRef.current, toolbarRef.current);
+    }
+    bringToFront(); // Asegurar que inicia en el frente
+  }, [bringToFront]);
+
+  useEffect(() => {
+    updateExplorerBody();
+  }, [updateExplorerBody]);
 
   function handleItemClick(item) {
     if (item.isUp) {
