@@ -32,7 +32,7 @@ function terminalReducer(state, action) {
           }
         ],
         currentPath: '/home/martin',
-      // environment: {
+        environment: {
           USER: 'martin',
           HOME: '/home/martin',
           PWD: '/home/martin',
