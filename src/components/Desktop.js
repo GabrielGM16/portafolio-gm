@@ -11,6 +11,7 @@ import {
 
 // Hooks de contexto
 import { useWindowManager } from '../contexts/WindowManagerContext';
+import { useModalManager } from '../contexts/ModalManagerContext';
 import { useApplications } from '../contexts/ApplicationContext';
 
 // Componentes
@@ -19,6 +20,7 @@ import ContextMenu from './ContextMenu';
 
 function Desktop() {
   const { openWindow } = useWindowManager();
+  const { openModal } = useModalManager();
   const { launchApplication, getFavoriteApplications } = useApplications();
   
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0 });
@@ -67,7 +69,7 @@ function Desktop() {
   // Manejar doble clic en icono
   const handleIconDoubleClick = useCallback((iconId) => {
     console.log('Double click detected on icon:', iconId);
-    const windowId = `${iconId}-${Date.now()}`;
+    const modalId = `${iconId}-${Date.now()}`;
     
     // Mapear IDs de iconos a tipos de componentes
     const componentMap = {
@@ -80,21 +82,22 @@ function Desktop() {
     };
     
     const componentType = componentMap[iconId] || iconId;
-    console.log('Opening window with type:', componentType);
+    const iconData = desktopIcons.find(icon => icon.id === iconId);
+    const title = iconData?.name || iconId;
     
-    launchApplication(iconId, windowId);
-    openWindow({
-      id: windowId,
+    console.log('Opening modal with type:', componentType);
+    
+    // Lanzar aplicación para tracking
+    launchApplication(iconId, modalId);
+    
+    // Abrir modal en lugar de ventana
+    openModal({
+      id: modalId,
       type: componentType,
-      title: desktopIcons.find(icon => icon.id === iconId)?.name || iconId,
-      component: componentType,
-      position: { x: 100, y: 100 },
-      size: { width: 800, height: 600 },
-      isMinimized: false,
-      isMaximized: false,
-      zIndex: Date.now()
+      title: title,
+      component: componentType
     });
-  }, [launchApplication, openWindow, desktopIcons]);
+  }, [launchApplication, openModal, desktopIcons]);
 
   // Manejar clic derecho en el escritorio
   const handleContextMenu = useCallback((e) => {

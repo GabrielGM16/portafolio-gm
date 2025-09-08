@@ -23,7 +23,7 @@ import {
 import { useFileSystem } from '../../contexts/FileSystemContext';
 import { useTheme } from '../../contexts/ThemeContext';
 
-function FileManagerWindow({ windowId }) {
+function FileManagerWindow({ windowId, isModal = false, onClose }) {
   const { 
     currentPath, 
     fileSystem, 
@@ -160,7 +160,7 @@ function FileManagerWindow({ windowId }) {
   };
 
   return (
-    <div className="h-full flex flex-col bg-white dark:bg-gray-900">
+    <div className={`h-full flex flex-col bg-white dark:bg-gray-900 ${isModal ? 'file-manager-modal' : ''}`}>
       {/* Barra de herramientas */}
       <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
         {/* Navegación */}

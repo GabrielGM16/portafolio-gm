@@ -6,7 +6,7 @@ import { Terminal, ChevronRight } from 'lucide-react';
 import { useTerminal } from '../../contexts/TerminalContext';
 import { useTheme } from '../../contexts/ThemeContext';
 
-function TerminalWindow({ windowId }) {
+function TerminalWindow({ windowId, isModal = false, onClose }) {
   const { 
     sessions, 
     createSession, 
@@ -176,17 +176,19 @@ function TerminalWindow({ windowId }) {
   }
 
   return (
-    <div className="h-full flex flex-col bg-black text-white font-mono text-sm">
-      {/* Header de la terminal */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
-        <div className="flex items-center space-x-2">
-          <Terminal className="w-4 h-4 text-ubuntu-orange" />
-          <span className="text-sm font-medium">Terminal</span>
+    <div className={`h-full flex flex-col bg-black text-white font-mono text-sm ${isModal ? 'terminal-modal' : ''}`}>
+      {/* Header de la terminal - solo mostrar si no es modal */}
+      {!isModal && (
+        <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
+          <div className="flex items-center space-x-2">
+            <Terminal className="w-4 h-4 text-ubuntu-orange" />
+            <span className="text-sm font-medium">Terminal</span>
+          </div>
+          <div className="flex items-center space-x-2 text-xs text-gray-400">
+            <span>Session: {activeSessionId?.slice(-8)}</span>
+          </div>
         </div>
-        <div className="flex items-center space-x-2 text-xs text-gray-400">
-          <span>Session: {activeSessionId?.slice(-8)}</span>
-        </div>
-      </div>
+      )}
 
       {/* Contenido de la terminal */}
       <div 

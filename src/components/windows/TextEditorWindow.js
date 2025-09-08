@@ -14,7 +14,7 @@ import {
   Replace
 } from 'lucide-react';
 
-const TextEditorWindow = () => {
+const TextEditorWindow = ({ windowId, isModal = false, onClose }) => {
   const [content, setContent] = useState('# Bienvenido al Editor de Texto\n\nEste es un editor de texto simple con funcionalidades básicas.\n\nPuedes escribir aquí tu contenido...');
   const [fileName, setFileName] = useState('documento.txt');
   const [isModified, setIsModified] = useState(false);

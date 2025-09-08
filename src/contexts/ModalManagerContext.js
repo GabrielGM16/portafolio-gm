@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useCallback } from 'react';
+import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 // Componentes que se mostrarán en los modales
-import TerminalWindow from '../components/TerminalWindow';
-import FileManager from '../components/FileManager';
-import Portfolio from '../components/Portfolio';
-import TextEditor from '../components/TextEditor';
-import Settings from '../components/Settings';
-import About from '../components/About';
+import TerminalWindow from '../components/windows/TerminalWindow';
+import FileManagerWindow from '../components/windows/FileManagerWindow';
+import PortfolioWindow from '../components/windows/PortfolioWindow';
+import AboutWindow from '../components/windows/AboutWindow';
+import ApplicationsWindow from '../components/windows/ApplicationsWindow';
+import TextEditorWindow from '../components/windows/TextEditorWindow';
 
 const MySwal = withReactContent(Swal);
 
@@ -111,19 +112,19 @@ export const ModalManagerProvider = ({ children }) => {
         ComponentToRender = TerminalWindow;
         break;
       case 'fileManager':
-        ComponentToRender = FileManager;
+        ComponentToRender = FileManagerWindow;
         break;
       case 'portfolio':
-        ComponentToRender = Portfolio;
+        ComponentToRender = PortfolioWindow;
         break;
       case 'textEditor':
-        ComponentToRender = TextEditor;
+        ComponentToRender = TextEditorWindow;
         break;
       case 'settings':
-        ComponentToRender = Settings;
+        ComponentToRender = ApplicationsWindow;
         break;
       case 'about':
-        ComponentToRender = About;
+        ComponentToRender = AboutWindow;
         break;
       default:
         console.warn(`Tipo de modal desconocido: ${type}`);
@@ -133,12 +134,33 @@ export const ModalManagerProvider = ({ children }) => {
     const config = getModalConfig(type, title);
     
     try {
+      // Crear un contenedor div para el componente React
+      const container = document.createElement('div');
+      container.style.width = '100%';
+      container.style.height = '100%';
+      
       await MySwal.fire({
         ...config,
-        html: React.createElement(ComponentToRender, {
-          isModal: true,
-          onClose: () => Swal.close()
-        })
+        html: container,
+        didOpen: () => {
+          // Aplicar estilos personalizados cuando se abre el modal
+          const popup = Swal.getPopup();
+          if (popup) {
+            popup.style.backgroundColor = '#2d3748';
+            popup.style.color = '#ffffff';
+            popup.style.borderRadius = '12px';
+            popup.style.border = '2px solid #4a5568';
+          }
+          
+          // Renderizar el componente React en el contenedor
+          const root = createRoot(container);
+          root.render(
+            React.createElement(ComponentToRender, {
+              isModal: true,
+              onClose: () => Swal.close()
+            })
+          );
+        }
       });
     } catch (error) {
       console.error('Error al abrir modal:', error);

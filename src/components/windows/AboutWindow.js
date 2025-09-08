@@ -20,7 +20,7 @@ import {
 // Hooks de contexto
 import { useTheme } from '../../contexts/ThemeContext';
 
-function AboutWindow({ windowId }) {
+function AboutWindow({ windowId, isModal = false, onClose }) {
   const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState('system');
   const [systemInfo, setSystemInfo] = useState({

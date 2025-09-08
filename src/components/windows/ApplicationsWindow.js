@@ -42,7 +42,7 @@ import { useApplications } from '../../contexts/ApplicationContext';
 import { useWindowManager } from '../../contexts/WindowManagerContext';
 import { useTheme } from '../../contexts/ThemeContext';
 
-function ApplicationsWindow({ windowId }) {
+function ApplicationsWindow({ windowId, isModal = false, onClose }) {
   const { applications, installedApps, installApp, uninstallApp, launchApp } = useApplications();
   const { openWindow } = useWindowManager();
   const { theme } = useTheme();
@@ -305,48 +305,18 @@ function ApplicationsWindow({ windowId }) {
     }
   };
 
-  // Manejar clic derecho
-  const handleContextMenu = (e, app) => {
-    e.preventDefault();
-    setShowContextMenu({
-      x: e.clientX,
-      y: e.clientY,
-      app
-    });
-  };
-
-  // Cerrar menú contextual
-  useEffect(() => {
-    const handleClickOutside = () => setShowContextMenu(null);
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') setShowContextMenu(null);
-    };
-
-    if (showContextMenu) {
-      document.addEventListener('click', handleClickOutside);
-      document.addEventListener('keydown', handleEscape);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [showContextMenu]);
-
-  // Componente de aplicación en vista de cuadrícula
-  const AppGridItem = ({ app }) => {
+  // Componente de aplicación en vista de lista
+  const AppListItem = ({ app }) => {
     const Icon = app.icon;
     
     return (
       <motion.div
         layout
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
         className={`
-          relative p-4 rounded-lg border cursor-pointer transition-all duration-200
+          flex items-center p-4 rounded-lg border cursor-pointer transition-all duration-200
           ${selectedApps.includes(app.id)
             ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
             : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
@@ -441,6 +411,143 @@ function ApplicationsWindow({ windowId }) {
           >
             <MoreVertical className="w-4 h-4" />
           </button>
+        </div>
+      </motion.div>
+    );
+  };
+
+  // Manejar clic derecho
+  const handleContextMenu = (e, app) => {
+    e.preventDefault();
+    setShowContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      app
+    });
+  };
+
+  // Cerrar menú contextual
+  useEffect(() => {
+    const handleClickOutside = () => setShowContextMenu(null);
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setShowContextMenu(null);
+    };
+
+    if (showContextMenu) {
+      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [showContextMenu]);
+
+  // Componente de aplicación en vista de cuadrícula
+  const AppGridItem = ({ app }) => {
+    const Icon = app.icon;
+    
+    return (
+      <motion.div
+        layout
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className={`
+          relative p-4 rounded-lg border cursor-pointer transition-all duration-200
+          ${selectedApps.includes(app.id)
+            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+            : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
+          }
+        `}
+        onClick={() => {
+          if (selectedApps.includes(app.id)) {
+            setSelectedApps(selectedApps.filter(id => id !== app.id));
+          } else {
+            setSelectedApps([...selectedApps, app.id]);
+          }
+        }}
+        onDoubleClick={() => handleAppDoubleClick(app)}
+        onContextMenu={(e) => handleContextMenu(e, app)}
+      >
+        {/* Estado de instalación */}
+        <div className="absolute top-2 right-2 flex space-x-1">
+          {app.favorite && (
+            <Star className="w-4 h-4 text-yellow-500 fill-current" />
+          )}
+          {!app.installed && (
+            <div className="w-2 h-2 bg-red-500 rounded-full" />
+          )}
+          {app.running && (
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+          )}
+        </div>
+
+        {/* Icono de la aplicación */}
+        <div className="flex justify-center mb-3">
+          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <Icon className="w-8 h-8 text-white" />
+          </div>
+        </div>
+
+        {/* Información de la aplicación */}
+        <div className="text-center">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 truncate">
+            {app.name}
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
+            {app.description}
+          </p>
+          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-500">
+            <span>v{app.version}</span>
+            <span>{app.size}</span>
+          </div>
+          
+          {/* Rating */}
+          <div className="flex items-center justify-center mt-2 space-x-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-3 h-3 ${
+                  i < Math.floor(app.rating)
+                    ? 'text-yellow-400 fill-current'
+                    : 'text-gray-300 dark:text-gray-600'
+                }`}
+              />
+            ))}
+            <span className="text-xs text-gray-600 dark:text-gray-400 ml-1">
+              {app.rating}
+            </span>
+          </div>
+        </div>
+
+        {/* Botón de acción */}
+        <div className="mt-3">
+          {app.installed ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAppDoubleClick(app);
+              }}
+              className="w-full px-3 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors"
+            >
+              Abrir
+            </button>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log(`Instalando ${app.name}...`);
+              }}
+              className="w-full px-3 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-1"
+            >
+              <Download className="w-4 h-4" />
+              <span>Instalar</span>
+            </button>
+          )}
         </div>
       </motion.div>
     );
@@ -665,112 +772,4 @@ function ApplicationsWindow({ windowId }) {
   );
 }
 
-export default ApplicationsWindow;/20'
-            : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600'
-          }
-        `}
-        onClick={() => {
-          if (selectedApps.includes(app.id)) {
-            setSelectedApps(selectedApps.filter(id => id !== app.id));
-          } else {
-            setSelectedApps([...selectedApps, app.id]);
-          }
-        }}
-        onDoubleClick={() => handleAppDoubleClick(app)}
-        onContextMenu={(e) => handleContextMenu(e, app)}
-      >
-        {/* Estado de instalación */}
-        <div className="absolute top-2 right-2 flex space-x-1">
-          {app.favorite && (
-            <Star className="w-4 h-4 text-yellow-500 fill-current" />
-          )}
-          {!app.installed && (
-            <div className="w-2 h-2 bg-red-500 rounded-full" />
-          )}
-          {app.running && (
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          )}
-        </div>
-
-        {/* Icono de la aplicación */}
-        <div className="flex justify-center mb-3">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-            <Icon className="w-8 h-8 text-white" />
-          </div>
-        </div>
-
-        {/* Información de la aplicación */}
-        <div className="text-center">
-          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 truncate">
-            {app.name}
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
-            {app.description}
-          </p>
-          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-500">
-            <span>v{app.version}</span>
-            <span>{app.size}</span>
-          </div>
-          
-          {/* Rating */}
-          <div className="flex items-center justify-center mt-2 space-x-1">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`w-3 h-3 ${
-                  i < Math.floor(app.rating)
-                    ? 'text-yellow-400 fill-current'
-                    : 'text-gray-300 dark:text-gray-600'
-                }`}
-              />
-            ))}
-            <span className="text-xs text-gray-600 dark:text-gray-400 ml-1">
-              {app.rating}
-            </span>
-          </div>
-        </div>
-
-        {/* Botón de acción */}
-        <div className="mt-3">
-          {app.installed ? (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAppDoubleClick(app);
-              }}
-              className="w-full px-3 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors"
-            >
-              Abrir
-            </button>
-          ) : (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                // Simular instalación
-                console.log(`Instalando ${app.name}...`);
-              }}
-              className="w-full px-3 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-1"
-            >
-              <Download className="w-4 h-4" />
-              <span>Instalar</span>
-            </button>
-          )}
-        </div>
-      </motion.div>
-    );
-  };
-
-  // Componente de aplicación en vista de lista
-  const AppListItem = ({ app }) => {
-    const Icon = app.icon;
-    
-    return (
-      <motion.div
-        layout
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        className={`
-          flex items-center p-4 rounded-lg border cursor-pointer transition-all duration-200
-          ${selectedApps.includes(app.id)
-            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900
+export default ApplicationsWindow;

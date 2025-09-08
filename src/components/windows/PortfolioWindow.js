@@ -1,7 +1,7 @@
 import React from 'react';
 import { User, Code, Briefcase, Mail, Github, Linkedin, ExternalLink } from 'lucide-react';
 
-const PortfolioWindow = () => {
+const PortfolioWindow = ({ windowId, isModal = false, onClose }) => {
   const projects = [
     {
       id: 1,
