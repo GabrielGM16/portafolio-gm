@@ -26,19 +26,17 @@ import { useTheme } from '../../contexts/ThemeContext';
 function FileManagerWindow({ windowId, isModal = false, onClose }) {
   const { 
     currentPath, 
-    fileSystem, 
-    navigateToPath, 
+    getCurrentDirectoryContent,
+    changeDirectory,
     goBack, 
     goForward, 
     goUp, 
     canGoBack, 
     canGoForward,
-    copyFile,
-    cutFile,
-    pasteFile,
-    deleteFile,
-    createFolder,
-    clipboard
+    copyFiles,
+    cutFiles,
+    clearClipboard,
+    clipBoard
   } = useFileSystem();
   const { theme } = useTheme();
   
@@ -49,28 +47,8 @@ function FileManagerWindow({ windowId, isModal = false, onClose }) {
   const [showNewFolderDialog, setShowNewFolderDialog] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
 
-  // Obtener contenido del directorio actual
-  const getCurrentDirectoryContent = () => {
-    const pathParts = currentPath.split('/').filter(Boolean);
-    let current = fileSystem;
-    
-    for (const part of pathParts) {
-      if (current.children && current.children[part]) {
-        current = current.children[part];
-      } else {
-        return [];
-      }
-    }
-    
-    if (!current.children) return [];
-    
-    return Object.entries(current.children).map(([name, item]) => ({
-      name,
-      ...item
-    }));
-  };
-
-  const directoryContent = getCurrentDirectoryContent();
+  // Obtener contenido del directorio actual usando el contexto
+  const directoryContent = getCurrentDirectoryContent() || [];
   
   // Filtrar contenido por búsqueda
   const filteredContent = directoryContent.filter(item =>
@@ -94,7 +72,7 @@ function FileManagerWindow({ windowId, isModal = false, onClose }) {
   const handleItemDoubleClick = (item) => {
     if (item.type === 'directory') {
       const newPath = currentPath === '/' ? `/${item.name}` : `${currentPath}/${item.name}`;
-      navigateToPath(newPath);
+      changeDirectory(newPath);
     } else {
       // Abrir archivo (aquí podrías abrir un editor de texto, visor de imágenes, etc.)
       console.log('Abriendo archivo:', item.name);
@@ -150,10 +128,10 @@ function FileManagerWindow({ windowId, isModal = false, onClose }) {
     }
   };
 
-  // Crear nueva carpeta
+  // Crear nueva carpeta (función temporal)
   const handleCreateFolder = () => {
     if (newFolderName.trim()) {
-      createFolder(currentPath, newFolderName.trim());
+      console.log('Crear carpeta:', newFolderName.trim(), 'en:', currentPath);
       setNewFolderName('');
       setShowNewFolderDialog(false);
     }
@@ -187,7 +165,7 @@ function FileManagerWindow({ windowId, isModal = false, onClose }) {
             <ChevronUp className="w-4 h-4" />
           </button>
           <button
-            onClick={() => navigateToPath('/home/martin')}
+            onClick={() => changeDirectory('/home/martin')}
             className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
           >
             <Home className="w-4 h-4" />
@@ -308,21 +286,21 @@ function FileManagerWindow({ windowId, isModal = false, onClose }) {
                   <span>Abrir</span>
                 </button>
                 <button 
-                  onClick={() => copyFile(currentPath, contextMenu.item.name)}
+                  onClick={() => copyFiles([contextMenu.item.id])}
                   className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
                 >
                   <Copy className="w-4 h-4" />
                   <span>Copiar</span>
                 </button>
                 <button 
-                  onClick={() => cutFile(currentPath, contextMenu.item.name)}
+                  onClick={() => cutFiles([contextMenu.item.id])}
                   className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
                 >
                   <Scissors className="w-4 h-4" />
                   <span>Cortar</span>
                 </button>
                 <button 
-                  onClick={() => deleteFile(currentPath, contextMenu.item.name)}
+                  onClick={() => console.log('Eliminar:', contextMenu.item.name)}
                   className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 text-red-600"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -332,9 +310,9 @@ function FileManagerWindow({ windowId, isModal = false, onClose }) {
             ) : (
               // Menú para área vacía
               <>
-                {clipboard && (
+                {clipBoard && clipBoard.files.length > 0 && (
                   <button 
-                    onClick={() => pasteFile(currentPath)}
+                    onClick={() => console.log('Pegar archivos')}
                     className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
                   >
                     <Download className="w-4 h-4" />

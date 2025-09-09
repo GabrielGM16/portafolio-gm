@@ -1,16 +1,12 @@
 import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Minus, 
-  Square, 
-  X, 
-  Maximize2, 
-  Minimize2
-} from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 
 // Hooks de contexto
 import { useWindowManager } from '../contexts/WindowManagerContext';
 import { useTheme } from '../contexts/ThemeContext';
+
+// Componentes
+import LinuxWindow from './LinuxWindow';
 
 // Componentes de ventanas
 import TerminalWindow from './windows/TerminalWindow';
@@ -21,16 +17,10 @@ import PortfolioWindow from './windows/PortfolioWindow';
 import TextEditorWindow from './windows/TextEditorWindow';
 
 function WindowManager() {
-  const { windows, updateWindow, closeWindow, focusWindow, minimizeWindow, maximizeWindow } = useWindowManager();
+  const { windows, updateWindow, updateWindowPosition, closeWindow, focusWindow, minimizeWindow, maximizeWindow } = useWindowManager();
   const { theme } = useTheme();
   
-  const [dragState, setDragState] = useState({
-    isDragging: false,
-    windowId: null,
-    startPos: { x: 0, y: 0 },
-    startWindowPos: { x: 0, y: 0 }
-  });
-  
+  // Estado solo para resize (drag se maneja localmente en cada ventana)
   const [resizeState, setResizeState] = useState({
     isResizing: false,
     windowId: null,
@@ -52,21 +42,14 @@ function WindowManager() {
   console.log('Available window components:', Object.keys(windowComponents));
   console.log('Current windows:', windows.map(w => ({ id: w.id, type: w.type, component: w.component })));
 
-  // Manejar inicio de arrastre optimizado
-  const handleDragStart = useCallback((e, windowId) => {
-    e.preventDefault();
-    const window = windows.find(w => w.id === windowId);
-    if (!window || window.isMaximized) return;
-
-    setDragState({
-      isDragging: true,
-      windowId,
-      startPos: { x: e.clientX, y: e.clientY },
-      startWindowPos: { x: window.position.x, y: window.position.y }
-    });
-    
-    focusWindow(windowId);
-  }, [windows, focusWindow]);
+  // Manejar finalización de arrastre (optimizado para evitar re-renders)
+  const handleDragEnd = useCallback((e, windowId, finalPosition) => {
+    // Actualizar posición directamente usando updateWindowPosition
+    if (finalPosition) {
+      updateWindowPosition(windowId, finalPosition);
+      return;
+    }
+  }, [updateWindowPosition]);
 
   // Manejar inicio de redimensionamiento
   const handleResizeStart = useCallback((e, windowId, direction) => {
@@ -87,49 +70,24 @@ function WindowManager() {
     focusWindow(windowId);
   }, [windows, focusWindow]);
 
-  // Referencias para evitar re-renders excesivos
-  const dragStateRef = useRef(dragState);
+  // Referencias para evitar re-renders excesivos (solo para resize)
   const resizeStateRef = useRef(resizeState);
   const windowsRef = useRef(windows);
   const updateWindowRef = useRef(updateWindow);
   
   // Actualizar referencias
   useEffect(() => {
-    dragStateRef.current = dragState;
     resizeStateRef.current = resizeState;
     windowsRef.current = windows;
     updateWindowRef.current = updateWindow;
   });
 
-  // Manejar movimiento del mouse optimizado
+  // Manejar movimiento del mouse optimizado (solo para resize)
   useEffect(() => {
     const handleMouseMove = (e) => {
-      const currentDragState = dragStateRef.current;
       const currentResizeState = resizeStateRef.current;
       const currentWindows = windowsRef.current;
       const currentUpdateWindow = updateWindowRef.current;
-      
-      // Manejar arrastre
-      if (currentDragState.isDragging && currentDragState.windowId) {
-        const deltaX = e.clientX - currentDragState.startPos.x;
-        const deltaY = e.clientY - currentDragState.startPos.y;
-        
-        const newX = Math.max(0, Math.min(
-          window.innerWidth - 200,
-          currentDragState.startWindowPos.x + deltaX
-        ));
-        const newY = Math.max(0, Math.min(
-          window.innerHeight - 100,
-          currentDragState.startWindowPos.y + deltaY
-        ));
-        
-        // Usar requestAnimationFrame para suavizar las actualizaciones
-        requestAnimationFrame(() => {
-          currentUpdateWindow(currentDragState.windowId, {
-            position: { x: newX, y: newY }
-          });
-        });
-      }
       
       // Manejar redimensionamiento
       if (currentResizeState.isResizing && currentResizeState.windowId) {
@@ -175,13 +133,6 @@ function WindowManager() {
     };
 
     const handleMouseUp = () => {
-      setDragState({
-        isDragging: false,
-        windowId: null,
-        startPos: { x: 0, y: 0 },
-        startWindowPos: { x: 0, y: 0 }
-      });
-      
       setResizeState({
         isResizing: false,
         windowId: null,
@@ -191,10 +142,10 @@ function WindowManager() {
       });
     };
 
-    if (dragState.isDragging || resizeState.isResizing) {
+    if (resizeState.isResizing) {
       document.addEventListener('mousemove', handleMouseMove, { passive: true });
       document.addEventListener('mouseup', handleMouseUp);
-      document.body.style.cursor = dragState.isDragging ? 'grabbing' : 'resizing';
+      document.body.style.cursor = 'resizing';
       document.body.style.userSelect = 'none';
     }
 
@@ -204,7 +155,7 @@ function WindowManager() {
       document.body.style.cursor = '';
       document.body.style.userSelect = '';
     };
-  }, [dragState.isDragging, resizeState.isResizing]);
+  }, [resizeState.isResizing]);
 
   // Calcular el zIndex máximo una sola vez
   const maxZIndex = useMemo(() => {
@@ -234,141 +185,30 @@ function WindowManager() {
     e.stopPropagation();
   }, []);
 
-  // Componente de ventana individual optimizado
+  // Componente de ventana individual optimizado con estilo Linux
   const Window = React.memo(({ window }) => {
     const WindowComponent = windowComponents[window.component] || windowComponents[window.type];
     const isActive = window.zIndex === maxZIndex;
     
-    if (window.state === 'minimized') return null;
-
     return (
-      <motion.div
-        className={`
-          window fixed select-none
-          ${isActive ? 'z-50' : 'z-40'}
-        `}
-        style={{
-          left: window.position.x,
-          top: window.position.y,
-          width: window.state === 'maximized' ? '100vw' : window.size.width,
-          height: window.state === 'maximized' ? '100vh' : window.size.height,
-          zIndex: window.zIndex
-        }}
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ 
-          opacity: 1, 
-          scale: 1,
-          x: window.state === 'maximized' ? -window.position.x : 0,
-          y: window.state === 'maximized' ? -window.position.y : 0
-        }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
-        onClick={() => focusWindow(window.id)}
+      <LinuxWindow
+        window={window}
+        isActive={isActive}
+        onDragEnd={handleDragEnd}
+        onResizeStart={handleResizeStart}
+        onFocus={focusWindow}
+        onMinimize={handleMinimize}
+        onMaximize={handleMaximize}
+        onClose={handleClose}
       >
-        {/* Barra de título */}
-        <div 
-          className={`
-            window-header flex items-center justify-between
-            h-10 px-4 bg-ubuntu-dark-surface dark:bg-ubuntu-dark-bg
-            border-b border-white/10 cursor-grab active:cursor-grabbing
-            ${isActive ? 'bg-opacity-100' : 'bg-opacity-80'}
-          `}
-          onMouseDown={(e) => {
-            // No iniciar drag si se hace click en los controles
-            if (e.target.closest('.window-controls')) {
-              return;
-            }
-            handleDragStart(e, window.id);
-          }}
-        >
-          <div className="window-title flex items-center space-x-2">
-            <div className="window-icon w-4 h-4 bg-ubuntu-orange rounded-sm" />
-            <span className="text-sm font-medium text-white truncate">
-              {window.title}
-            </span>
+        {WindowComponent ? (
+          <WindowComponent windowId={window.id} {...window.props} />
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+            Componente no encontrado: {window.component || window.type}
           </div>
-          
-          <div className="window-controls flex items-center space-x-1">
-            <button
-              className="control-button w-6 h-6 flex items-center justify-center rounded hover:bg-yellow-500 transition-colors duration-150"
-              onClick={handleMinimize(window.id)}
-            >
-              <Minus size={12} className="text-white" />
-            </button>
-            
-            <button
-              className="control-button w-6 h-6 flex items-center justify-center rounded hover:bg-green-500 transition-colors duration-150"
-              onClick={handleMaximize(window.id)}
-            >
-              {window.state === 'maximized' ? (
-                <Minimize2 size={12} className="text-white" />
-              ) : (
-                <Maximize2 size={12} className="text-white" />
-              )}
-            </button>
-            
-            <button
-              className="control-button w-6 h-6 flex items-center justify-center rounded hover:bg-red-500 transition-colors duration-150"
-              onClick={handleClose(window.id)}
-              onMouseDown={handleMouseDown}
-            >
-              <X size={12} className="text-white" />
-            </button>
-          </div>
-        </div>
-
-        {/* Contenido de la ventana */}
-        <div className="window-content h-full bg-white dark:bg-ubuntu-dark-surface overflow-hidden">
-          {WindowComponent ? (
-            <WindowComponent windowId={window.id} {...window.props} />
-          ) : (
-            <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
-              Componente no encontrado: {window.component || window.type}
-            </div>
-          )}
-        </div>
-
-        {/* Bordes de redimensionamiento */}
-        {window.state !== 'maximized' && (
-          <>
-            {/* Bordes */}
-            <div 
-              className="absolute top-0 left-0 right-0 h-1 cursor-n-resize"
-              onMouseDown={(e) => handleResizeStart(e, window.id, 'top')}
-            />
-            <div 
-              className="absolute bottom-0 left-0 right-0 h-1 cursor-s-resize"
-              onMouseDown={(e) => handleResizeStart(e, window.id, 'bottom')}
-            />
-            <div 
-              className="absolute top-0 bottom-0 left-0 w-1 cursor-w-resize"
-              onMouseDown={(e) => handleResizeStart(e, window.id, 'left')}
-            />
-            <div 
-              className="absolute top-0 bottom-0 right-0 w-1 cursor-e-resize"
-              onMouseDown={(e) => handleResizeStart(e, window.id, 'right')}
-            />
-            
-            {/* Esquinas */}
-            <div 
-              className="absolute top-0 left-0 w-2 h-2 cursor-nw-resize"
-              onMouseDown={(e) => handleResizeStart(e, window.id, 'top-left')}
-            />
-            <div 
-              className="absolute top-0 right-0 w-2 h-2 cursor-ne-resize"
-              onMouseDown={(e) => handleResizeStart(e, window.id, 'top-right')}
-            />
-            <div 
-              className="absolute bottom-0 left-0 w-2 h-2 cursor-sw-resize"
-              onMouseDown={(e) => handleResizeStart(e, window.id, 'bottom-left')}
-            />
-            <div 
-              className="absolute bottom-0 right-0 w-2 h-2 cursor-se-resize"
-              onMouseDown={(e) => handleResizeStart(e, window.id, 'bottom-right')}
-            />
-          </>
         )}
-      </motion.div>
+      </LinuxWindow>
     );
   }, (prevProps, nextProps) => {
     // Comparación personalizada para evitar re-renders innecesarios

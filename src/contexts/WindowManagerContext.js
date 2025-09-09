@@ -33,14 +33,28 @@ function windowManagerReducer(state, action) {
         };
       }
 
-      // Crear nueva ventana
+      // Crear nueva ventana con validación defensiva
+      const safePosition = position || { x: 100 + (state.windows.length * 30), y: 50 + (state.windows.length * 30) };
+      const safeSize = size || { width: 800, height: 600 };
+      
+      // Validar que las posiciones y tamaños sean números válidos
+      const validatedPosition = {
+        x: typeof safePosition.x === 'number' && !isNaN(safePosition.x) ? safePosition.x : 100 + (state.windows.length * 30),
+        y: typeof safePosition.y === 'number' && !isNaN(safePosition.y) ? safePosition.y : 50 + (state.windows.length * 30)
+      };
+      
+      const validatedSize = {
+        width: typeof safeSize.width === 'number' && !isNaN(safeSize.width) ? safeSize.width : 800,
+        height: typeof safeSize.height === 'number' && !isNaN(safeSize.height) ? safeSize.height : 600
+      };
+      
       const newWindow = {
         id,
         type,
         component: component || type,
         title,
-        position: position || { x: 100 + (state.windows.length * 30), y: 50 + (state.windows.length * 30) },
-        size: size || { width: 800, height: 600 },
+        position: validatedPosition,
+        size: validatedSize,
         state: 'normal', // 'normal', 'minimized', 'maximized'
         zIndex: state.nextZIndex,
         isResizable: true,
@@ -120,10 +134,17 @@ function windowManagerReducer(state, action) {
 
     case 'UPDATE_WINDOW_POSITION': {
       const { windowId, position } = action.payload;
+      
+      // Validar que la posición sea válida
+      const validatedPosition = {
+        x: typeof position?.x === 'number' && !isNaN(position.x) ? position.x : 100,
+        y: typeof position?.y === 'number' && !isNaN(position.y) ? position.y : 100
+      };
+      
       return {
         ...state,
         windows: state.windows.map(w => 
-          w.id === windowId ? { ...w, position } : w
+          w.id === windowId ? { ...w, position: validatedPosition } : w
         )
       };
     }
@@ -225,7 +246,10 @@ export const WindowManagerProvider = ({ children }) => {
   }, []);
 
   const updateWindowPosition = useCallback((windowId, position) => {
-    dispatch({ type: 'UPDATE_WINDOW_POSITION', payload: { windowId, position } });
+    // Usar requestAnimationFrame para batching de actualizaciones
+    requestAnimationFrame(() => {
+      dispatch({ type: 'UPDATE_WINDOW_POSITION', payload: { windowId, position } });
+    });
   }, []);
 
   const updateWindowSize = useCallback((windowId, size) => {
@@ -248,23 +272,27 @@ export const WindowManagerProvider = ({ children }) => {
     return state.windows.filter(w => w.state === 'minimized');
   }, [state.windows]);
 
-  // Guardar estado en sessionStorage
+  // Guardar estado en sessionStorage con debounce para evitar actualizaciones excesivas
   React.useEffect(() => {
-    try {
-      const stateToSave = {
-        windows: state.windows.map(w => ({
-          ...w,
-          // No guardar props complejas que no se pueden serializar
-          props: {}
-        })),
-        activeWindowId: state.activeWindowId,
-        nextZIndex: state.nextZIndex,
-        minimizedWindows: state.minimizedWindows
-      };
-      sessionStorage.setItem('window-manager-state', JSON.stringify(stateToSave));
-    } catch (error) {
-      console.warn('Error guardando estado de ventanas:', error);
-    }
+    const timeoutId = setTimeout(() => {
+      try {
+        const stateToSave = {
+          windows: state.windows.map(w => ({
+            ...w,
+            // No guardar props complejas que no se pueden serializar
+            props: {}
+          })),
+          activeWindowId: state.activeWindowId,
+          nextZIndex: state.nextZIndex,
+          minimizedWindows: state.minimizedWindows
+        };
+        sessionStorage.setItem('window-manager-state', JSON.stringify(stateToSave));
+      } catch (error) {
+        console.warn('Error guardando estado de ventanas:', error);
+      }
+    }, 500); // Debounce de 500ms
+    
+    return () => clearTimeout(timeoutId);
   }, [state]);
 
   // Cargar estado guardado al inicializar

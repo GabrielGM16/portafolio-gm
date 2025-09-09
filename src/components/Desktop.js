@@ -11,7 +11,6 @@ import {
 
 // Hooks de contexto
 import { useWindowManager } from '../contexts/WindowManagerContext';
-import { useModalManager } from '../contexts/ModalManagerContext';
 import { useApplications } from '../contexts/ApplicationContext';
 
 // Componentes
@@ -20,7 +19,6 @@ import ContextMenu from './ContextMenu';
 
 function Desktop() {
   const { openWindow } = useWindowManager();
-  const { openModal } = useModalManager();
   const { launchApplication, getFavoriteApplications } = useApplications();
   
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0 });
@@ -69,7 +67,7 @@ function Desktop() {
   // Manejar doble clic en icono
   const handleIconDoubleClick = useCallback((iconId) => {
     console.log('Double click detected on icon:', iconId);
-    const modalId = `${iconId}-${Date.now()}`;
+    const windowId = `${iconId}-${Date.now()}`;
     
     // Mapear IDs de iconos a tipos de componentes
     const componentMap = {
@@ -85,19 +83,19 @@ function Desktop() {
     const iconData = desktopIcons.find(icon => icon.id === iconId);
     const title = iconData?.name || iconId;
     
-    console.log('Opening modal with type:', componentType);
+    console.log('Opening window with type:', componentType);
     
     // Lanzar aplicación para tracking
-    launchApplication(iconId, modalId);
+    launchApplication(iconId, windowId);
     
-    // Abrir modal en lugar de ventana
-    openModal({
-      id: modalId,
+    // Abrir ventana
+    openWindow({
+      id: windowId,
       type: componentType,
       title: title,
       component: componentType
     });
-  }, [launchApplication, openModal, desktopIcons]);
+  }, [launchApplication, openWindow, desktopIcons]);
 
   // Manejar clic derecho en el escritorio
   const handleContextMenu = useCallback((e) => {
