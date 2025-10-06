@@ -372,22 +372,46 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                       <h3 className="text-3xl font-bold text-white text-center mb-8">
                         Experiencia Profesional
                       </h3>
-                      <div className="space-y-6">
-                        <div className="border-l-4 border-yellow-400 pl-6">
-                          <h4 className="text-white font-semibold text-xl">Senior Full Stack Developer</h4>
-                          <p className="text-white/80 mb-2">Tech Solutions Inc. • 2022 - Presente</p>
-                          <p className="text-white/70">
-                            Desarrollo de aplicaciones web escalables usando React, Node.js y AWS. 
-                            Liderazgo de equipo de 5 desarrolladores.
-                          </p>
+                      <div className="space-y-8">
+                        <div className="border-l-4 border-green-400 pl-6">
+                          <h4 className="text-white font-semibold text-xl">Desarrollador Full-Stack</h4>
+                          <p className="text-white/80 mb-2">Envasadora Aguida • Enero 2025 - Actualidad</p>
+                          <p className="text-white/60 mb-3 text-sm">📍 San Luis de la Paz, Guanajuato</p>
+                          <div className="text-white/70 space-y-2">
+                            <p>• Diseño y desarrollo de un sistema empresarial integral para la gestión de reportes y administración interna</p>
+                            <p>• Implementación de múltiples módulos para distintos perfiles de usuario y flujos de trabajo</p>
+                            <p>• Responsable de montar y mantener el servidor (Linux + Apache)</p>
+                            <p>• Desarrollo completo del sistema en PHP con base de datos MySQL</p>
+                            <p>• Participación adicional en proyectos paralelos desarrollados también en PHP</p>
+                            <p className="text-green-300 font-medium mt-3">🛠️ Tecnologías: PHP, MySQL, HTML/CSS, JavaScript, Apache, Linux</p>
+                          </div>
                         </div>
+                        
                         <div className="border-l-4 border-blue-400 pl-6">
-                          <h4 className="text-white font-semibold text-xl">Full Stack Developer</h4>
-                          <p className="text-white/80 mb-2">Digital Agency • 2020 - 2022</p>
-                          <p className="text-white/70">
-                            Desarrollo de sitios web y aplicaciones para clientes diversos. 
-                            Especialización en e-commerce y sistemas de gestión.
-                          </p>
+                          <h4 className="text-white font-semibold text-xl">Consultor Técnico - Análisis Digital</h4>
+                          <p className="text-white/80 mb-2">Despacho Jurídico • 2024 - 2025</p>
+                          <p className="text-white/60 mb-3 text-sm">⚖️ Proceso Legal - Consultoría Técnica Digital</p>
+                          <div className="text-white/70 space-y-2">
+                            <p>• Consultoría técnica especializada para apoyo en proceso legal</p>
+                            <p>• Análisis y revisión de información digital extraída de dispositivos móviles</p>
+                            <p>• Evaluación técnica de datos de geolocalización y metadatos</p>
+                            <p>• Elaboración de reportes técnicos de análisis de información</p>
+                            <p>• Apoyo técnico especializado a equipos legales en interpretación de datos</p>
+                            <p className="text-blue-300 font-medium mt-3">🔍 Especialidades: Análisis de información digital, Consultoría técnica, Evaluación de datos móviles, Comunicación técnica-legal</p>
+                          </div>
+                        </div>
+
+                        <div className="border-l-4 border-purple-400 pl-6">
+                          <h4 className="text-white font-semibold text-xl">Practicante en Innovación Tecnológica</h4>
+                          <p className="text-white/80 mb-2">Optimen • Abril 2023 - Octubre 2023</p>
+                          <p className="text-white/60 mb-3 text-sm">📍 León, Guanajuato</p>
+                          <div className="text-white/70 space-y-2">
+                            <p>• Integración en el área de innovación, desarrollando soluciones con React y Python</p>
+                            <p>• Participación en proyectos de IoT e infraestructura con AWS</p>
+                            <p>• Aplicación de análisis de datos geoespaciales y vectores para el sector hídrico y aeroespacial</p>
+                            <p>• Apoyo en pruebas, prototipado y mejora de sistemas para clientes del sector industrial</p>
+                            <p className="text-purple-300 font-medium mt-3">🚀 Tecnologías: React, Python, AWS, IoT, Análisis geoespacial</p>
+                          </div>
                         </div>
                       </div>
                     </motion.div>
