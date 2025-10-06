@@ -17,6 +17,7 @@ import {
 const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [showExpandedContent, setShowExpandedContent] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
   const expandedContentRef = useRef(null);
 
   const handleEnter = () => {
@@ -47,14 +48,21 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
       title: 'Sobre Mí',
       description: 'Conoce mi historia y experiencia',
       color: 'from-green-500 to-emerald-500',
-      action: () => handleExploreMore()
+      action: () => setShowAboutModal(true)
     },
     {
       icon: Download,
       title: 'Descargar CV',
       description: 'Obtén mi currículum en PDF',
       color: 'from-purple-500 to-pink-500',
-      action: () => window.open('#', '_blank')
+      action: () => {
+        const link = document.createElement('a');
+        link.href = '/CV_MartinGabrielGodinezMorales.pdf';
+        link.download = 'CV_MartinGabrielGodinezMorales.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     },
     {
       icon: Mail,
@@ -416,6 +424,177 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
           </div>
         </motion.div>
       )}
+
+      {/* Modal Sobre Mí */}
+      <AnimatePresence>
+        {showAboutModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowAboutModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="bg-gradient-to-br from-purple-900/90 to-blue-900/90 backdrop-blur-md rounded-3xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-4xl font-bold text-white">Sobre Mí</h2>
+                <button
+                  onClick={() => setShowAboutModal(false)}
+                  className="text-white/70 hover:text-white text-2xl font-bold w-10 h-10 rounded-full hover:bg-white/10 transition-all duration-200"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="space-y-8">
+                {/* Sección Personal */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl p-6"
+                >
+                  <div className="flex items-center mb-4">
+                    <User className="w-8 h-8 text-green-400 mr-3" />
+                    <h3 className="text-2xl font-bold text-white">¿Quién soy?</h3>
+                  </div>
+                  <p className="text-white/90 text-lg leading-relaxed">
+                    Soy Martín Gabriel Godínez Morales, un desarrollador apasionado por la tecnología y la innovación. 
+                    Me considero una persona curiosa, creativa y siempre dispuesta a aprender algo nuevo. 
+                    Creo firmemente en el poder de la tecnología para transformar vidas y resolver problemas reales.
+                  </p>
+                </motion.div>
+
+                {/* Sección Valores */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl p-6"
+                >
+                  <div className="flex items-center mb-4">
+                    <Award className="w-8 h-8 text-blue-400 mr-3" />
+                    <h3 className="text-2xl font-bold text-white">Mis Valores</h3>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-green-400 rounded-full mr-3"></div>
+                        <span className="text-white/90"><strong>Excelencia:</strong> Busco la calidad en cada línea de código</span>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
+                        <span className="text-white/90"><strong>Colaboración:</strong> Creo en el poder del trabajo en equipo</span>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                        <span className="text-white/90"><strong>Innovación:</strong> Siempre busco nuevas formas de hacer las cosas</span>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-orange-400 rounded-full mr-3"></div>
+                        <span className="text-white/90"><strong>Integridad:</strong> Honestidad y transparencia en todo lo que hago</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Sección Pasión por la Tecnología */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl p-6"
+                >
+                  <div className="flex items-center mb-4">
+                    <Code className="w-8 h-8 text-purple-400 mr-3" />
+                    <h3 className="text-2xl font-bold text-white">Mi Pasión por la Tecnología</h3>
+                  </div>
+                  <p className="text-white/90 text-lg leading-relaxed mb-4">
+                    Desde pequeño me fascinó cómo funcionan las cosas. Esta curiosidad me llevó al mundo de la programación, 
+                    donde encontré la perfecta combinación entre lógica y creatividad. Cada proyecto es una oportunidad 
+                    de crear algo único y útil.
+                  </p>
+                  <p className="text-white/90 text-lg leading-relaxed">
+                    Me especializo en desarrollo web full-stack, pero siempre estoy explorando nuevas tecnologías. 
+                    Desde React y Node.js hasta inteligencia artificial y blockchain, cada día es una oportunidad de aprender.
+                  </p>
+                </motion.div>
+
+                {/* Sección Intereses Personales */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl p-6"
+                >
+                  <div className="flex items-center mb-4">
+                    <Zap className="w-8 h-8 text-yellow-400 mr-3" />
+                    <h3 className="text-2xl font-bold text-white">Más Allá del Código</h3>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-xl font-semibold text-white mb-3">Intereses</h4>
+                      <ul className="space-y-2 text-white/90">
+                        <li>• Fotografía y diseño visual</li>
+                        <li>• Música y producción musical</li>
+                        <li>• Deportes y vida activa</li>
+                        <li>• Lectura sobre tecnología e innovación</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-semibold text-white mb-3">Filosofía de Trabajo</h4>
+                      <p className="text-white/90">
+                        "El código no es solo instrucciones para una máquina, es comunicación entre humanos. 
+                        Escribo código pensando en quien lo leerá mañana."
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Sección Call to Action */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="text-center pt-4"
+                >
+                  <p className="text-white/90 text-lg mb-6">
+                    ¿Te gustaría conocer más sobre mi trabajo o colaborar en un proyecto?
+                  </p>
+                  <div className="flex justify-center space-x-4">
+                    <button
+                      onClick={() => {
+                        setShowAboutModal(false);
+                        onOpenWindow('contact');
+                      }}
+                      className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold transition-all duration-200 transform hover:scale-105"
+                    >
+                      Hablemos
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowAboutModal(false);
+                        onOpenWindow('portfolio');
+                      }}
+                      className="px-6 py-3 bg-white/20 backdrop-blur-md text-white rounded-xl font-semibold hover:bg-white/30 transition-all duration-200"
+                    >
+                      Ver Proyectos
+                    </button>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AnimatePresence>
   );
 };
