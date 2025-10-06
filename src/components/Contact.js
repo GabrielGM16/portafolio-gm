@@ -71,19 +71,19 @@ const Contact = ({ onClose }) => {
     {
       icon: Github,
       label: 'GitHub',
-      href: 'https://github.com',
+      href: 'https://github.com/GabrielGM16',
       color: 'hover:bg-gray-700'
     },
     {
       icon: Linkedin,
       label: 'LinkedIn',
-      href: 'https://linkedin.com',
+      href: 'https://www.linkedin.com/in/martin-gabriel-godinez-morales-39a48327b',
       color: 'hover:bg-blue-600'
     },
     {
       icon: Twitter,
       label: 'Twitter',
-      href: 'https://twitter.com',
+      href: 'https://x.com/GabrielGM162',
       color: 'hover:bg-blue-400'
     }
   ];
