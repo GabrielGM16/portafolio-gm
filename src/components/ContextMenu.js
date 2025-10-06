@@ -13,12 +13,10 @@ import {
 
 // Hooks de contexto
 import { useTheme } from '../contexts/ThemeContext';
-import { useWindowManager } from '../contexts/WindowManagerContext';
 import { useApplications } from '../contexts/ApplicationContext';
 
 function ContextMenu({ x, y, onClose }) {
   const { theme, toggleTheme } = useTheme();
-  const { openWindow } = useWindowManager();
   const { launchApplication } = useApplications();
   const menuRef = useRef(null);
 
@@ -76,71 +74,23 @@ function ContextMenu({ x, y, onClose }) {
         window.location.reload();
         break;
       case 'open-terminal':
-        const terminalId = `terminal-${Date.now()}`;
-        launchApplication('terminal', terminalId);
-        openWindow({
-          id: terminalId,
-          type: 'terminal',
-          title: 'Terminal',
-          component: 'terminal',
-          position: { x: 100, y: 100 },
-          size: { width: 800, height: 500 },
-          isMinimized: false,
-          isMaximized: false,
-          zIndex: Date.now()
-        });
+        console.log('Terminal action - window system removed');
         break;
       case 'open-files':
-        const filesId = `fileManager-${Date.now()}`;
-        launchApplication('fileManager', filesId);
-        openWindow({
-          id: filesId,
-          type: 'fileManager',
-          title: 'Archivos',
-          component: 'fileManager',
-          position: { x: 150, y: 150 },
-          size: { width: 900, height: 600 },
-          isMinimized: false,
-          isMaximized: false,
-          zIndex: Date.now()
-        });
+        console.log('Files action - window system removed');
         break;
       case 'change-wallpaper':
         // Implementar cambio de fondo de pantalla
         console.log('Cambiar fondo de pantalla');
         break;
       case 'display-settings':
-        const settingsId = `settings-${Date.now()}`;
-        launchApplication('settings', settingsId);
-        openWindow({
-          id: settingsId,
-          type: 'settings',
-          title: 'Configuración',
-          component: 'settings',
-          position: { x: 200, y: 100 },
-          size: { width: 800, height: 600 },
-          isMinimized: false,
-          isMaximized: false,
-          zIndex: Date.now()
-        });
+        console.log('Settings action - window system removed');
         break;
       case 'toggle-theme':
         toggleTheme();
         break;
       case 'about':
-        const aboutId = `about-${Date.now()}`;
-        launchApplication('about', aboutId);
-        openWindow({
-          id: aboutId,
-          type: 'about',
-          title: 'Acerca de Ubuntu',
-          component: 'about',
-          position: { x: 250, y: 150 },
-          size: { width: 600, height: 500 },
-          isMinimized: false,
-          isMaximized: false,
-          zIndex: Date.now()
-        });
+        console.log('About action - window system removed');
         break;
       default:
         break;

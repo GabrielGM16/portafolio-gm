@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Terminal, 
@@ -16,10 +16,22 @@ import {
 
 const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const [showExpandedContent, setShowExpandedContent] = useState(false);
+  const expandedContentRef = useRef(null);
 
   const handleEnter = () => {
     setIsVisible(false);
     setTimeout(() => onEnterPortfolio(), 500);
+  };
+
+  const handleExploreMore = () => {
+    setShowExpandedContent(true);
+    setTimeout(() => {
+      expandedContentRef.current?.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 100);
   };
 
   const quickActions = [
@@ -185,7 +197,7 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                     className="flex justify-center space-x-4"
                   >
                     <button
-                      onClick={handleEnter}
+                      onClick={handleExploreMore}
                       className="px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
                     >
                       <span>Explorar Portafolio</span>
@@ -265,12 +277,142 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                 animate={{ y: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
                 className="inline-flex flex-col items-center text-white/70 cursor-pointer"
-                onClick={handleEnter}
+                onClick={handleExploreMore}
               >
                 <span className="text-sm mb-2">Explorar más</span>
                 <ChevronDown className="w-6 h-6" />
               </motion.div>
             </motion.div>
+
+            {/* Expanded Content Section */}
+            <AnimatePresence>
+              {showExpandedContent && (
+                <motion.div
+                  ref={expandedContentRef}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 50 }}
+                  transition={{ duration: 0.6 }}
+                  className="px-6 py-12"
+                >
+                  <div className="max-w-6xl mx-auto">
+                    {/* Projects Section */}
+                    <motion.div
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="mb-16"
+                    >
+                      <h3 className="text-4xl font-bold text-white text-center mb-12">
+                        Proyectos Destacados
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {[
+                          {
+                            title: 'E-commerce Platform',
+                            description: 'Plataforma completa de comercio electrónico con React y Node.js',
+                            tech: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+                            color: 'from-blue-500 to-purple-600'
+                          },
+                          {
+                            title: 'Task Management App',
+                            description: 'Aplicación de gestión de tareas con funcionalidades avanzadas',
+                            tech: ['React', 'TypeScript', 'Firebase'],
+                            color: 'from-green-500 to-teal-600'
+                          },
+                          {
+                            title: 'Real-time Chat',
+                            description: 'Sistema de chat en tiempo real con Socket.io',
+                            tech: ['React', 'Socket.io', 'Express'],
+                            color: 'from-orange-500 to-red-600'
+                          }
+                        ].map((project, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ y: 30, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.3 + index * 0.1 }}
+                            className="bg-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 group"
+                          >
+                            <div className={`w-full h-32 rounded-xl bg-gradient-to-r ${project.color} mb-4 flex items-center justify-center group-hover:shadow-xl transition-shadow`}>
+                              <Code className="w-12 h-12 text-white" />
+                            </div>
+                            <h4 className="text-white font-semibold text-xl mb-3">{project.title}</h4>
+                            <p className="text-white/80 mb-4">{project.description}</p>
+                            <div className="flex flex-wrap gap-2">
+                              {project.tech.map((tech, techIndex) => (
+                                <span
+                                  key={techIndex}
+                                  className="px-3 py-1 bg-white/20 rounded-full text-white/90 text-sm"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+
+                    {/* Experience Section */}
+                    <motion.div
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-16"
+                    >
+                      <h3 className="text-3xl font-bold text-white text-center mb-8">
+                        Experiencia Profesional
+                      </h3>
+                      <div className="space-y-6">
+                        <div className="border-l-4 border-yellow-400 pl-6">
+                          <h4 className="text-white font-semibold text-xl">Senior Full Stack Developer</h4>
+                          <p className="text-white/80 mb-2">Tech Solutions Inc. • 2022 - Presente</p>
+                          <p className="text-white/70">
+                            Desarrollo de aplicaciones web escalables usando React, Node.js y AWS. 
+                            Liderazgo de equipo de 5 desarrolladores.
+                          </p>
+                        </div>
+                        <div className="border-l-4 border-blue-400 pl-6">
+                          <h4 className="text-white font-semibold text-xl">Full Stack Developer</h4>
+                          <p className="text-white/80 mb-2">Digital Agency • 2020 - 2022</p>
+                          <p className="text-white/70">
+                            Desarrollo de sitios web y aplicaciones para clientes diversos. 
+                            Especialización en e-commerce y sistemas de gestión.
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Call to Action */}
+                    <motion.div
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.7 }}
+                      className="text-center"
+                    >
+                      <h3 className="text-3xl font-bold text-white mb-6">
+                        ¿Listo para trabajar juntos?
+                      </h3>
+                      <div className="flex justify-center space-x-4">
+                        <button
+                          onClick={() => onOpenWindow('contact')}
+                          className="px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
+                        >
+                          Contactar Ahora
+                        </button>
+                        <button
+                          onClick={() => onOpenWindow('portfolio')}
+                          className="px-8 py-4 bg-white/20 backdrop-blur-md text-white rounded-xl font-semibold hover:bg-white/30 transition-all duration-200"
+                        >
+                          Ver Todos los Proyectos
+                        </button>
+                      </div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
       )}

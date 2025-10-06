@@ -11,12 +11,10 @@ import {
 } from 'lucide-react';
 
 // Hooks de contexto
-import { useWindowManager } from '../contexts/WindowManagerContext';
 import { useApplications } from '../contexts/ApplicationContext';
 
 function StartMenu({ onClose }) {
-  const { openWindow } = useWindowManager();
-  const { applications, launchApplication, getFavoriteApplications, getRecentApplications } = useApplications();
+  const { applications, getFavoriteApplications, getRecentApplications } = useApplications();
   
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('favorites');
@@ -70,24 +68,7 @@ function StartMenu({ onClose }) {
 
   // Manejar lanzamiento de aplicación
   const handleLaunchApp = (appId) => {
-    const windowId = `${appId}-${Date.now()}`;
-    const app = applications[appId];
-    
-    if (app) {
-      launchApplication(appId, windowId);
-      openWindow({
-        id: windowId,
-        type: appId,
-        title: app.name,
-        component: appId,
-        position: { x: 100, y: 100 },
-        size: app.defaultSize || { width: 800, height: 600 },
-        isMinimized: false,
-        isMaximized: false,
-        zIndex: Date.now()
-      });
-    }
-    
+    console.log(`Launch app: ${appId} - window system removed`);
     onClose();
   };
 

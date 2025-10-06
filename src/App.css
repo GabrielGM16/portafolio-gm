@@ -2,10 +2,7 @@
 /* Global y Fondo de Escritorio (Desktop) */
 /* ============================ */
 body {
-  background-image: url('img/linux.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #1a1a1a;
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -377,17 +374,13 @@ body {
 }
 
 .explorer-item.folder {
-  background-image: url('img/carpetaicon.png');
-  background-size: 50px 50px;
-  background-repeat: no-repeat;
-  background-position: center top;
+  background: #4a90e2;
+  border-radius: 8px;
 }
 
 .explorer-item.file {
-  background-image: url('img/txt.png');
-  background-size: 50px 50px;
-  background-repeat: no-repeat;
-  background-position: center top;
+  background: #f39c12;
+  border-radius: 8px;
 }
 
 .explorer-item span {
