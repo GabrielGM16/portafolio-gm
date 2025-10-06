@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Terminal, 
   Briefcase, 
   Mail, 
   Github, 
@@ -11,7 +10,8 @@ import {
   Code,
   Zap,
   Award,
-  ExternalLink
+  ExternalLink,
+  User
 } from 'lucide-react';
 
 const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
@@ -43,11 +43,11 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
       action: () => onOpenWindow('portfolio')
     },
     {
-      icon: Terminal,
-      title: 'Terminal',
-      description: 'Modo interactivo - Prueba comandos',
+      icon: User,
+      title: 'Sobre Mí',
+      description: 'Conoce mi historia y experiencia',
       color: 'from-green-500 to-emerald-500',
-      action: () => onOpenWindow('terminal')
+      action: () => handleExploreMore()
     },
     {
       icon: Download,

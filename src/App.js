@@ -3,6 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import LandingPage from './components/LandingPage';
 import QuickAccessMenu from './components/QuickAccessMenu';
 import LoadingScreen from './components/LoadingScreen';
+import Contact from './components/Contact';
+import Portfolio from './components/Portfolio';
 
 // Context Providers
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -16,6 +18,10 @@ function AppContent() {
   const [showLanding, setShowLanding] = useState(true);
   const [showQuickAccess, setShowQuickAccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [openWindows, setOpenWindows] = useState({
+    contact: false,
+    portfolio: false
+  });
 
   // Simular carga inicial
   useEffect(() => {
@@ -30,8 +36,19 @@ function AppContent() {
   const handleOpenWindowFromLanding = (windowType) => {
     console.log('Opening window from landing:', windowType);
     
-    // Simplemente cerramos la landing page
-    setShowLanding(false);
+    // Abrir la ventana específica
+    setOpenWindows(prev => ({
+      ...prev,
+      [windowType]: true
+    }));
+  };
+
+  // Función para cerrar ventanas
+  const handleCloseWindow = (windowType) => {
+    setOpenWindows(prev => ({
+      ...prev,
+      [windowType]: false
+    }));
   };
 
   // Función para entrar al portafolio (cerrar landing)
@@ -78,6 +95,16 @@ function AppContent() {
               )}
             </AnimatePresence>
           </React.Fragment>
+        )}
+      </AnimatePresence>
+
+      {/* Ventanas modales */}
+      <AnimatePresence>
+        {openWindows.contact && (
+          <Contact onClose={() => handleCloseWindow('contact')} />
+        )}
+        {openWindows.portfolio && (
+          <Portfolio onClose={() => handleCloseWindow('portfolio')} />
         )}
       </AnimatePresence>
     </div>
