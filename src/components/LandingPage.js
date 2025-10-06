@@ -74,11 +74,11 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
   ];
 
   const skills = [
-    { name: 'React', level: 95 },
-    { name: 'Node.js', level: 90 },
-    { name: 'TypeScript', level: 85 },
+    { name: 'PHP', level: 95 },
+    { name: 'MySQL', level: 90 },
+    { name: 'JavaScript', level: 90 },
+    { name: 'React', level: 85 },
     { name: 'Python', level: 80 },
-    { name: 'MongoDB', level: 85 },
     { name: 'AWS', level: 75 }
   ];
 
@@ -567,17 +567,17 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                     <div>
                       <h4 className="text-xl font-semibold text-white mb-3">Intereses</h4>
                       <ul className="space-y-2 text-white/90">
-                        <li>• Fotografía y diseño visual</li>
-                        <li>• Música y producción musical</li>
-                        <li>• Deportes y vida activa</li>
-                        <li>• Lectura sobre tecnología e innovación</li>
+                        <li>• Filosofía</li>
+                        <li>• Lectura</li>
+                        <li>• Psicología</li>
+                        <li>• Ciberseguridad</li>
+                        <li>• Innovación en todos los aspectos</li>
                       </ul>
                     </div>
                     <div>
                       <h4 className="text-xl font-semibold text-white mb-3">Filosofía de Trabajo</h4>
                       <p className="text-white/90">
-                        "El código no es solo instrucciones para una máquina, es comunicación entre humanos. 
-                        Escribo código pensando en quien lo leerá mañana."
+                        "Como dijo una vez un sabio: si puedes imaginarlo, puedes programarlo"
                       </p>
                     </div>
                   </div>
