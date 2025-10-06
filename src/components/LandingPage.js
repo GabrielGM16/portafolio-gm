@@ -176,8 +176,8 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                     transition={{ delay: 0.5 }}
                     className="text-xl text-white/90 mb-8 max-w-2xl mx-auto"
                   >
-                    Full Stack Developer especializado en React, Node.js y arquitecturas escalables.
-                    Transformo ideas en productos digitales de alto impacto.
+                    Full Stack Developer especializado en PHP, MySQL, JavaScript y tecnologías modernas.
+                    Transformo ideas en sistemas empresariales robustos y soluciones digitales innovadoras.
                   </motion.p>
 
                   {/* Stats */}
