@@ -39,7 +39,7 @@ const Portfolio = ({ onClose }) => {
       category: 'Web Development',
       date: '2024',
       status: 'Completado',
-      github: 'https://github.com',
+      github: 'https://github.com/GabrielGM16',
       demo: 'https://demo.com',
       features: [
         'Autenticación de usuarios',
@@ -60,7 +60,7 @@ const Portfolio = ({ onClose }) => {
       category: 'Productivity',
       date: '2024',
       status: 'En desarrollo',
-      github: 'https://github.com',
+      github: 'https://github.com/GabrielGM16',
       demo: 'https://demo.com',
       features: [
         'Tableros Kanban',
@@ -81,7 +81,7 @@ const Portfolio = ({ onClose }) => {
       category: 'Communication',
       date: '2023',
       status: 'Completado',
-      github: 'https://github.com',
+      github: 'https://github.com/GabrielGM16',
       demo: 'https://demo.com',
       features: [
         'Chat en tiempo real',
@@ -102,7 +102,7 @@ const Portfolio = ({ onClose }) => {
       category: 'Data Science',
       date: '2023',
       status: 'Completado',
-      github: 'https://github.com',
+      github: 'https://github.com/GabrielGM16',
       demo: 'https://demo.com',
       features: [
         'Visualizaciones interactivas',
@@ -123,7 +123,7 @@ const Portfolio = ({ onClose }) => {
       category: 'Backend',
       date: '2023',
       status: 'Completado',
-      github: 'https://github.com',
+      github: 'https://github.com/GabrielGM16',
       demo: null,
       features: [
         'Arquitectura de microservicios',
@@ -144,7 +144,7 @@ const Portfolio = ({ onClose }) => {
       category: 'Machine Learning',
       date: '2022',
       status: 'Completado',
-      github: 'https://github.com',
+      github: 'https://github.com/GabrielGM16',
       demo: 'https://demo.com',
       features: [
         'Modelo predictivo',

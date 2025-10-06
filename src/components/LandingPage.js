@@ -124,11 +124,11 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
               </div>
 
               <div className="flex space-x-3">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://github.com/GabrielGM16" target="_blank" rel="noopener noreferrer"
                    className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors">
                   <Github className="w-5 h-5 text-white" />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.linkedin.com/in/martin-gabriel-godinez-morales-39a48327b" target="_blank" rel="noopener noreferrer"
                    className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors">
                   <Linkedin className="w-5 h-5 text-white" />
                 </a>

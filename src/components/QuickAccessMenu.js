@@ -64,13 +64,13 @@ const QuickAccessMenu = ({ onOpenWindow, onClose }) => {
     {
       icon: Github,
       label: 'GitHub',
-      url: 'https://github.com',
+      url: 'https://github.com/GabrielGM16',
       color: 'hover:bg-gray-800'
     },
     {
       icon: Linkedin,
       label: 'LinkedIn',
-      url: 'https://linkedin.com',
+      url: 'https://www.linkedin.com/in/martin-gabriel-godinez-morales-39a48327b',
       color: 'hover:bg-blue-600'
     },
     {
