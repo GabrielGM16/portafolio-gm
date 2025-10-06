@@ -56,13 +56,13 @@ const Contact = ({ onClose }) => {
     {
       icon: Phone,
       label: 'Teléfono',
-      value: '+52 123 456 7890',
-      href: 'tel:+521234567890'
+      value: '+52 418 597 139',
+      href: 'tel:+52418597139'
     },
     {
       icon: MapPin,
       label: 'Ubicación',
-      value: 'Ciudad de México, México',
+      value: 'México',
       href: null
     }
   ];
