@@ -83,9 +83,9 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
   ];
 
   const stats = [
-    { icon: Code, label: 'Proyectos', value: '15+' },
-    { icon: Zap, label: 'Experiencia', value: '4 años' },
-    { icon: Award, label: 'Clientes', value: '20+' }
+    { icon: Code, label: 'Proyectos', value: '10+' },
+    { icon: Zap, label: 'Experiencia', value: '2 años+' },
+    { icon: Award, label: 'Clientes', value: '5+' }
   ];
 
   return (
