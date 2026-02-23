@@ -20,139 +20,140 @@ const Portfolio = ({ onClose }) => {
 
   const technologies = [
     { id: 'all', name: 'Todos', color: 'bg-gray-500' },
+    { id: 'php', name: 'PHP', color: 'bg-indigo-600' },
+    { id: 'mysql', name: 'MySQL', color: 'bg-blue-700' },
+    { id: 'javascript', name: 'JavaScript', color: 'bg-yellow-500' },
     { id: 'react', name: 'React', color: 'bg-blue-500' },
-    { id: 'nodejs', name: 'Node.js', color: 'bg-green-500' },
-    { id: 'typescript', name: 'TypeScript', color: 'bg-blue-600' },
-    { id: 'python', name: 'Python', color: 'bg-yellow-500' },
-    { id: 'mongodb', name: 'MongoDB', color: 'bg-green-600' },
+    { id: 'nextjs', name: 'Next.js', color: 'bg-gray-800' },
+    { id: 'python', name: 'Python', color: 'bg-green-500' },
     { id: 'aws', name: 'AWS', color: 'bg-orange-500' }
   ];
 
   const projects = [
     {
       id: 1,
-      title: 'E-commerce Platform',
-      description: 'Plataforma completa de comercio electrónico con carrito de compras, pagos y gestión de inventario.',
-      longDescription: 'Una plataforma de e-commerce completa desarrollada con React y Node.js. Incluye autenticación de usuarios, carrito de compras, procesamiento de pagos con Stripe, panel de administración, gestión de inventario y sistema de reseñas. La aplicación está optimizada para SEO y cuenta con un diseño responsive.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20e-commerce%20website%20interface%20with%20shopping%20cart%20and%20product%20grid&image_size=landscape_4_3',
-      technologies: ['react', 'nodejs', 'mongodb'],
-      category: 'Web Development',
-      date: '2024',
-      status: 'Completado',
+      title: 'ERP   – Envasadora Aguida',
+      description: 'Sistema ERP industrial desarrollado desde cero con más de 12 módulos integrados para la industria alimentaria. PHP + React en producción.',
+      longDescription: '  es un ERP industrial completo desarrollado desde cero en PHP y React para Envasadora Aguida. Cuenta con más de 12 módulos integrados para distintos perfiles de usuario (administrador, operador, gerencia), generación de reportes PDF con TCPDF/mPDF, flujos de validación internos y administración de procesos empresariales. El servidor Linux + Apache es administrado de forma independiente. Sistema actualmente en producción.',
+      image: null,
+      technologies: ['php', 'react', 'mysql', 'javascript'],
+      category: 'ERP / Sistemas Empresariales',
+      date: '2025',
+      status: 'En producción',
       github: 'https://github.com/GabrielGM16',
-      demo: 'https://demo.com',
+      demo: null,
       features: [
-        'Autenticación de usuarios',
-        'Carrito de compras',
-        'Procesamiento de pagos',
-        'Panel de administración',
-        'Gestión de inventario',
-        'Sistema de reseñas'
+        'Más de 12 módulos integrados',
+        'Múltiples perfiles de usuario',
+        'Generación de reportes PDF (TCPDF/mPDF)',
+        'Flujos de validación internos',
+        'Servidor Linux + Apache administrado',
+        'Base de datos MySQL optimizada'
       ]
     },
     {
       id: 2,
-      title: 'Task Management App',
-      description: 'Aplicación de gestión de tareas con funcionalidades avanzadas de colaboración y seguimiento.',
-      longDescription: 'Una aplicación de gestión de tareas moderna con funcionalidades de colaboración en tiempo real. Permite crear proyectos, asignar tareas, establecer fechas límite, comentarios y notificaciones. Desarrollada con React, TypeScript y Firebase para sincronización en tiempo real.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=task%20management%20dashboard%20with%20kanban%20board%20and%20project%20cards&image_size=landscape_4_3',
-      technologies: ['react', 'typescript'],
-      category: 'Productivity',
-      date: '2024',
-      status: 'En desarrollo',
+      title: 'Sistemas Internos – Aguida (Proyectos Paralelos)',
+      description: 'Desarrollo de múltiples sistemas adicionales en PHP y React para procesos internos de Envasadora Aguida.',
+      longDescription: 'Además del ERP  , se desarrollaron sistemas paralelos para cubrir necesidades específicas de Envasadora Aguida. Estos proyectos incluyeron módulos de seguimiento de procesos, gestión de reportes operativos y herramientas internas, todos desarrollados en PHP con MySQL y React, manteniendo la misma arquitectura modular del sistema principal.',
+      image: null,
+      technologies: ['php', 'react', 'mysql', 'javascript'],
+      category: 'Sistemas Empresariales',
+      date: '2025',
+      status: 'En producción',
       github: 'https://github.com/GabrielGM16',
-      demo: 'https://demo.com',
+      demo: null,
       features: [
-        'Tableros Kanban',
-        'Colaboración en tiempo real',
-        'Notificaciones push',
-        'Gestión de equipos',
-        'Reportes y analytics',
-        'Integración con calendario'
+        'Arquitectura modular reutilizable',
+        'Integración con ERP  ',
+        'Gestión de procesos internos',
+        'Reportes operativos',
+        'Control de acceso por roles',
+        'PHP + React + MySQL'
       ]
     },
     {
       id: 3,
-      title: 'Real-time Chat Application',
-      description: 'Sistema de chat en tiempo real con salas, mensajes privados y compartir archivos.',
-      longDescription: 'Una aplicación de chat en tiempo real desarrollada con Socket.io y React. Incluye salas de chat públicas y privadas, mensajes directos, compartir archivos, emojis, notificaciones y historial de mensajes. La aplicación soporta múltiples usuarios simultáneos.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20chat%20application%20interface%20with%20message%20bubbles%20and%20user%20list&image_size=landscape_4_3',
-      technologies: ['react', 'nodejs'],
-      category: 'Communication',
-      date: '2023',
-      status: 'Completado',
-      github: 'https://github.com/GabrielGM16',
-      demo: 'https://demo.com',
-      features: [
-        'Chat en tiempo real',
-        'Salas públicas y privadas',
-        'Compartir archivos',
-        'Emojis y reacciones',
-        'Historial de mensajes',
-        'Notificaciones'
-      ]
-    },
-    {
-      id: 4,
-      title: 'Data Analytics Dashboard',
-      description: 'Dashboard interactivo para análisis de datos con gráficos y reportes personalizables.',
-      longDescription: 'Un dashboard completo para análisis de datos desarrollado con React y Python. Incluye visualizaciones interactivas, filtros avanzados, exportación de reportes y conexión a múltiples fuentes de datos. Utiliza D3.js para gráficos personalizados.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=data%20analytics%20dashboard%20with%20charts%20graphs%20and%20statistics&image_size=landscape_4_3',
+      title: 'Plataforma IoT de Monitoreo',
+      description: 'Plataforma de monitoreo IoT para el sector hídrico e industrial con visualización de datos en tiempo real.',
+      longDescription: 'Proyecto desarrollado durante la práctica en Optimen, orientado al monitoreo de dispositivos IoT en sectores hídrico e industrial. Incluye dashboard interactivo con React, procesamiento de datos con Python, integración con AWS IoT y alertas en tiempo real. Apoyó en la mejora de sistemas para clientes del sector industrial.',
+      image: null,
       technologies: ['react', 'python', 'aws'],
-      category: 'Data Science',
-      date: '2023',
-      status: 'Completado',
-      github: 'https://github.com/GabrielGM16',
-      demo: 'https://demo.com',
-      features: [
-        'Visualizaciones interactivas',
-        'Filtros avanzados',
-        'Exportación de reportes',
-        'Múltiples fuentes de datos',
-        'Gráficos personalizados',
-        'Análisis predictivo'
-      ]
-    },
-    {
-      id: 5,
-      title: 'API REST Microservices',
-      description: 'Arquitectura de microservicios con API REST, autenticación JWT y documentación automática.',
-      longDescription: 'Una arquitectura de microservicios robusta desarrollada con Node.js y MongoDB. Incluye autenticación JWT, documentación automática con Swagger, rate limiting, logging y monitoreo. Desplegada en AWS con Docker y Kubernetes.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=microservices%20architecture%20diagram%20with%20api%20endpoints%20and%20databases&image_size=landscape_4_3',
-      technologies: ['nodejs', 'mongodb', 'aws'],
-      category: 'Backend',
+      category: 'IoT / Industrial',
       date: '2023',
       status: 'Completado',
       github: 'https://github.com/GabrielGM16',
       demo: null,
       features: [
-        'Arquitectura de microservicios',
-        'Autenticación JWT',
-        'Documentación Swagger',
-        'Rate limiting',
-        'Logging y monitoreo',
-        'Despliegue con Docker'
+        'Dashboard en tiempo real',
+        'Integración con AWS IoT',
+        'Alertas y notificaciones',
+        'Procesamiento de datos con Python',
+        'Visualización de métricas',
+        'Soporte multi-dispositivo'
+      ]
+    },
+    {
+      id: 4,
+      title: 'Análisis Geoespacial y Vectorial',
+      description: 'Herramienta de análisis de datos geoespaciales y vectoriales para los sectores hídrico y aeroespacial.',
+      longDescription: 'Proyecto de análisis de datos geoespaciales desarrollado en Optimen con Python y AWS. Aplica procesamiento de vectores y análisis de datos satelitales para el sector hídrico y aeroespacial. Incluye visualización de mapas, análisis de cobertura y generación de informes técnicos. Orientado a clientes del sector industrial y gubernamental.',
+      image: null,
+      technologies: ['python', 'aws'],
+      category: 'Data Science',
+      date: '2023',
+      status: 'Completado',
+      github: 'https://github.com/GabrielGM16',
+      demo: null,
+      features: [
+        'Procesamiento de datos vectoriales',
+        'Análisis de datos satelitales',
+        'Visualización de mapas interactivos',
+        'Generación de informes técnicos',
+        'Integración con AWS',
+        'Análisis de cobertura geográfica'
+      ]
+    },
+    {
+      id: 5,
+      title: 'Consultoría Técnica Digital',
+      description: 'Análisis forense de información digital extraída de dispositivos móviles para apoyo en proceso legal.',
+      longDescription: 'Consultoría técnica especializada para un despacho jurídico durante 2024-2025. Involucró el análisis y revisión de información digital de dispositivos móviles, evaluación de datos de geolocalización y metadatos, elaboración de reportes técnicos y comunicación de hallazgos a equipos legales. Requirió alta precisión, discreción y capacidad para traducir conceptos técnicos complejos a lenguaje accesible para peritos y abogados.',
+      image: null,
+      technologies: ['python'],
+      category: 'Consultoría Técnica',
+      date: '2024',
+      status: 'Completado',
+      github: null,
+      demo: null,
+      features: [
+        'Análisis de metadatos digitales',
+        'Evaluación de geolocalización',
+        'Extracción de datos móviles',
+        'Reportes técnicos periciales',
+        'Comunicación técnica-legal',
+        'Manejo de información confidencial'
       ]
     },
     {
       id: 6,
-      title: 'Machine Learning Model',
-      description: 'Modelo de machine learning para predicción de precios con interfaz web interactiva.',
-      longDescription: 'Un modelo de machine learning desarrollado con Python y scikit-learn para predicción de precios. Incluye preprocesamiento de datos, entrenamiento del modelo, evaluación de métricas y una interfaz web para hacer predicciones en tiempo real.',
-      image: 'https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=machine%20learning%20interface%20with%20data%20visualization%20and%20prediction%20charts&image_size=landscape_4_3',
-      technologies: ['python', 'aws'],
-      category: 'Machine Learning',
-      date: '2022',
+      title: 'Portal Web Corporativo',
+      description: 'Desarrollo de portal web con autenticación, gestión de contenido y panel administrativo en PHP y MySQL.',
+      longDescription: 'Portal web corporativo desarrollado con PHP y MySQL que incluye sistema de autenticación seguro, gestión de contenido dinámica, panel administrativo completo y diseño responsive. Implementa buenas prácticas de seguridad (prevención de SQL injection, XSS), control de sesiones y administración de usuarios por roles.',
+      image: null,
+      technologies: ['php', 'mysql', 'javascript'],
+      category: 'Web Development',
+      date: '2024',
       status: 'Completado',
       github: 'https://github.com/GabrielGM16',
-      demo: 'https://demo.com',
+      demo: null,
       features: [
-        'Modelo predictivo',
-        'Preprocesamiento de datos',
-        'Evaluación de métricas',
-        'Interfaz web interactiva',
-        'API para predicciones',
-        'Visualización de resultados'
+        'Autenticación segura',
+        'Gestión de contenido dinámico',
+        'Panel administrativo',
+        'Control de roles y permisos',
+        'Diseño responsive',
+        'Prevención de vulnerabilidades'
       ]
     }
   ];
@@ -168,6 +169,8 @@ const Portfolio = ({ onClose }) => {
     switch (status) {
       case 'Completado':
         return 'bg-green-100 text-green-800';
+      case 'En producción':
+        return 'bg-blue-100 text-blue-800';
       case 'En desarrollo':
         return 'bg-yellow-100 text-yellow-800';
       default:
@@ -253,16 +256,18 @@ const Portfolio = ({ onClose }) => {
               >
                 {/* Project Image */}
                 <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center" style={{ display: 'none' }}>
+                  {project.image && (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.parentNode.querySelector('.img-fallback').style.display = 'flex';
+                      }}
+                    />
+                  )}
+                  <div className={`img-fallback absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ${project.image ? 'hidden' : ''}`}>
                     <Code className="w-16 h-16 text-white" />
                   </div>
                   <div className="absolute top-4 right-4">
@@ -382,17 +387,19 @@ const Portfolio = ({ onClose }) => {
               <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Project Image */}
-                  <div className="h-64 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl overflow-hidden">
-                    <img
-                      src={selectedProject.image}
-                      alt={selectedProject.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                      }}
-                    />
-                    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center" style={{ display: 'none' }}>
+                  <div className="h-64 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl overflow-hidden relative">
+                    {selectedProject.image && (
+                      <img
+                        src={selectedProject.image}
+                        alt={selectedProject.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentNode.querySelector('.img-fallback').style.display = 'flex';
+                        }}
+                      />
+                    )}
+                    <div className={`img-fallback absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ${selectedProject.image ? 'hidden' : ''}`}>
                       <Code className="w-16 h-16 text-white" />
                     </div>
                   </div>

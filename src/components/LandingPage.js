@@ -1,17 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Briefcase, 
-  Mail, 
-  Github, 
-  Linkedin, 
+import {
+  Briefcase,
+  Mail,
+  Github,
+  Linkedin,
   Download,
   ChevronDown,
   Code,
   Zap,
   Award,
   ExternalLink,
-  User
+  User,
+  GraduationCap
 } from 'lucide-react';
 
 const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
@@ -57,8 +58,8 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
       color: 'from-purple-500 to-pink-500',
       action: () => {
         const link = document.createElement('a');
-        link.href = '/CV_MartinGabrielGodinezMorales.pdf';
-        link.download = 'CV_MartinGabrielGodinezMorales.pdf';
+        link.href = '/ CV_GabrielGM.pdf';
+        link.download = ' CV_GabrielGM.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -78,8 +79,10 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
     { name: 'MySQL', level: 90 },
     { name: 'JavaScript', level: 90 },
     { name: 'React', level: 85 },
+    { name: 'Next.js', level: 80 },
     { name: 'Python', level: 80 },
-    { name: 'AWS', level: 75 }
+    { name: 'AWS', level: 75 },
+    { name: 'Linux/Apache', level: 80 }
   ];
 
   const stats = [
@@ -176,8 +179,9 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                     transition={{ delay: 0.5 }}
                     className="text-xl text-white/90 mb-8 max-w-2xl mx-auto"
                   >
-                    Full Stack Developer especializado en PHP, MySQL, JavaScript y tecnologías modernas.
-                    Transformo ideas en sistemas empresariales robustos y soluciones digitales innovadoras.
+                    Desarrollador Full-Stack especializado en PHP y JavaScript, con enfoque en sistemas ERP,
+                    arquitectura modular y despliegue en servidores Linux. Actualmente desarrollo el ERP  
+                    para Envasadora Aguida, con más de 12 módulos en producción.
                   </motion.p>
 
                   {/* Stats */}
@@ -252,7 +256,7 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                   className="bg-white/10 backdrop-blur-md rounded-2xl p-8"
                 >
                   <h3 className="text-white font-semibold text-xl mb-6 text-center">Tecnologías Principales</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {skills.map((skill, index) => (
                       <div key={index}>
                         <div className="flex justify-between mb-2">
@@ -317,21 +321,21 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[
                           {
-                            title: 'E-commerce Platform',
-                            description: 'Plataforma completa de comercio electrónico con React y Node.js',
-                            tech: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-                            color: 'from-blue-500 to-purple-600'
+                            title: 'Sistema Empresarial Integral',
+                            description: 'Sistema de gestión empresarial con múltiples módulos para Envasadora Aguida. Servidor Linux + Apache en producción.',
+                            tech: ['PHP', 'MySQL', 'JavaScript', 'Apache'],
+                            color: 'from-indigo-500 to-blue-700'
                           },
                           {
-                            title: 'Task Management App',
-                            description: 'Aplicación de gestión de tareas con funcionalidades avanzadas',
-                            tech: ['React', 'TypeScript', 'Firebase'],
+                            title: 'Plataforma IoT de Monitoreo',
+                            description: 'Monitoreo de dispositivos IoT para el sector hídrico e industrial con dashboard en tiempo real.',
+                            tech: ['React', 'Python', 'AWS'],
                             color: 'from-green-500 to-teal-600'
                           },
                           {
-                            title: 'Real-time Chat',
-                            description: 'Sistema de chat en tiempo real con Socket.io',
-                            tech: ['React', 'Socket.io', 'Express'],
+                            title: 'Análisis Geoespacial',
+                            description: 'Procesamiento de datos vectoriales y geoespaciales para los sectores hídrico y aeroespacial.',
+                            tech: ['Python', 'AWS'],
                             color: 'from-orange-500 to-red-600'
                           }
                         ].map((project, index) => (
@@ -378,12 +382,12 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                           <p className="text-white/80 mb-2">Envasadora Aguida • Enero 2025 - Actualidad</p>
                           <p className="text-white/60 mb-3 text-sm">📍 San Luis de la Paz, Guanajuato</p>
                           <div className="text-white/70 space-y-2">
-                            <p>• Diseño y desarrollo de un sistema empresarial integral para la gestión de reportes y administración interna</p>
-                            <p>• Implementación de múltiples módulos para distintos perfiles de usuario y flujos de trabajo</p>
-                            <p>• Responsable de montar y mantener el servidor (Linux + Apache)</p>
-                            <p>• Desarrollo completo del sistema en PHP con base de datos MySQL</p>
-                            <p>• Participación adicional en proyectos paralelos desarrollados también en PHP</p>
-                            <p className="text-green-300 font-medium mt-3">🛠️ Tecnologías: PHP, MySQL, HTML/CSS, JavaScript, Apache, Linux</p>
+                            <p>• Diseño y desarrollo desde cero del sistema  , un ERP industrial con más de 12 módulos integrados</p>
+                            <p>• Implementación de módulos para distintos perfiles de usuario (administrador, operador, gerencia)</p>
+                            <p>• Generación de reportes PDF y flujos de validación internos con TCPDF/mPDF</p>
+                            <p>• Administración y mantenimiento de servidor Linux con Apache</p>
+                            <p>• Desarrollo de múltiples sistemas adicionales en PHP y React para la misma empresa</p>
+                            <p className="text-green-300 font-medium mt-3">🛠️ Tecnologías: PHP, React, MySQL, JavaScript, HTML/CSS, Apache, Linux</p>
                           </div>
                         </div>
                         
@@ -489,9 +493,10 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                     <h3 className="text-2xl font-bold text-white">¿Quién soy?</h3>
                   </div>
                   <p className="text-white/90 text-lg leading-relaxed">
-                    Soy Martín Gabriel Godínez Morales, un desarrollador apasionado por la tecnología y la innovación. 
-                    Me considero una persona curiosa, creativa y siempre dispuesta a aprender algo nuevo. 
-                    Creo firmemente en el poder de la tecnología para transformar vidas y resolver problemas reales.
+                    Soy Martín Gabriel Godínez Morales, Desarrollador Full-Stack con experiencia sólida en sistemas
+                    ERP empresariales y aplicaciones web robustas. Especializado en PHP y JavaScript con enfoque en
+                    arquitectura modular y despliegue en servidores Linux. Actualmente curso una Maestría en
+                    Inteligencia Artificial, con interés en aplicar IA a sistemas reales.
                   </p>
                 </motion.div>
 
@@ -542,13 +547,14 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                     <h3 className="text-2xl font-bold text-white">Mi Pasión por la Tecnología</h3>
                   </div>
                   <p className="text-white/90 text-lg leading-relaxed mb-4">
-                    Desde pequeño me fascinó cómo funcionan las cosas. Esta curiosidad me llevó al mundo de la programación, 
-                    donde encontré la perfecta combinación entre lógica y creatividad. Cada proyecto es una oportunidad 
-                    de crear algo único y útil.
+                    Desde pequeño me fascinó cómo funcionan las cosas. Esta curiosidad me llevó al mundo de la programación,
+                    donde encontré la combinación perfecta entre lógica y creatividad. Cada sistema que construyo
+                    es una oportunidad de resolver un problema real con tecnología.
                   </p>
                   <p className="text-white/90 text-lg leading-relaxed">
-                    Me especializo en desarrollo web full-stack, pero siempre estoy explorando nuevas tecnologías. 
-                    Desde React y Node.js hasta inteligencia artificial y blockchain, cada día es una oportunidad de aprender.
+                    Me especializo en arquitectura de sistemas ERP, desarrollo PHP avanzado y aplicaciones con React
+                    y Next.js. Actualmente me adentro también en Inteligencia Artificial y machine learning a través
+                    de mi Maestría en IA en la UVEG.
                   </p>
                 </motion.div>
 
@@ -583,11 +589,68 @@ const LandingPage = ({ onEnterPortfolio, onOpenWindow }) => {
                   </div>
                 </motion.div>
 
-                {/* Sección Call to Action */}
+                {/* Sección Formación Académica */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.45 }}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl p-6"
+                >
+                  <div className="flex items-center mb-4">
+                    <GraduationCap className="w-8 h-8 text-cyan-400 mr-3" />
+                    <h3 className="text-2xl font-bold text-white">Formación Académica</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="border-l-2 border-cyan-400 pl-4">
+                      <p className="text-white font-semibold">Maestría en Inteligencia Artificial <span className="text-cyan-300 text-sm font-normal">(en curso)</span></p>
+                      <p className="text-white/60 text-sm">Universidad Virtual del Estado de Guanajuato (UVEG) • 2026 – 2027</p>
+                    </div>
+                    <div className="border-l-2 border-blue-400 pl-4">
+                      <p className="text-white font-semibold">Ingeniería en Desarrollo y Gestión de Software</p>
+                      <p className="text-white/60 text-sm">Universidad Tecnológica del Norte de Guanajuato • 2023 – 2025</p>
+                    </div>
+                    <div className="border-l-2 border-purple-400 pl-4">
+                      <p className="text-white font-semibold">TSU en Desarrollo de Software Multiplataforma</p>
+                      <p className="text-white/60 text-sm">Universidad Tecnológica del Norte de Guanajuato • 2021 – 2023</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Sección Certificaciones */}
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5 }}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl p-6"
+                >
+                  <div className="flex items-center mb-4">
+                    <Award className="w-8 h-8 text-yellow-400 mr-3" />
+                    <h3 className="text-2xl font-bold text-white">Certificaciones</h3>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {[
+                      { name: 'IT Essentials: PC Hardware and Software', org: 'Cisco', year: '2022' },
+                      { name: 'Curso Linux', org: 'Cisco', year: '2023' },
+                      { name: 'Introducción a las Redes', org: 'Cisco', year: '2023' },
+                      { name: 'Ciberseguridad Esencial', org: 'Cisco', year: '2024' },
+                      { name: 'Introducción a la Ciberseguridad', org: 'Cisco', year: '2024' },
+                    ].map((cert, index) => (
+                      <div key={index} className="flex items-start space-x-2">
+                        <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2 flex-shrink-0"></div>
+                        <div>
+                          <span className="text-white/90 text-sm font-medium">{cert.name}</span>
+                          <span className="text-white/50 text-xs block">{cert.org} • {cert.year}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Sección Call to Action */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.55 }}
                   className="text-center pt-4"
                 >
                   <p className="text-white/90 text-lg mb-6">
