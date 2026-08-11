@@ -62,7 +62,7 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/martin-gabriel-godinez-morales-39a48327b',
   twitter: 'https://x.com/GabrielGM162',
   twitterHandle: '@GabrielGM162',
-  cv: '/CV_MartinGabrielGodinezMorales.pdf',
+  cv: '/CV_MartinGabrielGodinezMorales_2026.pdf',
 };
 
 export const intro = {
