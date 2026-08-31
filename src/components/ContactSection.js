@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, Download, Github, Linkedin, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { ArrowUpRight, Download, Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import Section, { SectionHeader } from './ui/Section';
 import Reveal from './ui/Reveal';
 import { profile } from '../data/profile';
@@ -11,7 +11,12 @@ const paths = [
     body:
       'Si tu equipo pierde tiempo en fallas recurrentes, tus procesos dependen de Excel y mensajes, o necesitas desarrollar una idea sin montar un área completa, esa conversación la atiendo desde Nexo Bajío.',
     actions: [
-      { label: 'Escribir por WhatsApp', href: profile.whatsapp, icon: MessageCircle, primary: true, external: true },
+      {
+        label: 'Plantear el problema',
+        href: `mailto:${profile.email}?subject=${encodeURIComponent('Consulta para Nexo Bajío')}`,
+        icon: Mail,
+        primary: true,
+      },
       { label: 'Conocer Nexo Bajío', href: 'https://nexobajio.com.mx/', icon: ArrowUpRight, external: true },
     ],
   },
@@ -29,7 +34,6 @@ const paths = [
 
 const channels = [
   { icon: Mail, label: 'Correo', value: profile.email, href: `mailto:${profile.email}` },
-  { icon: Phone, label: 'Teléfono', value: profile.phone, href: profile.phoneHref },
   { icon: MapPin, label: 'Ubicación', value: profile.location, href: null },
 ];
 
@@ -85,7 +89,7 @@ const ContactSection = () => (
     </div>
 
     {/* Datos directos */}
-    <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-line-dark bg-[rgba(226,232,240,0.16)] sm:grid-cols-2 lg:grid-cols-5">
+    <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-line-dark bg-[rgba(226,232,240,0.16)] sm:grid-cols-2 lg:grid-cols-4">
       {[...channels, ...socials].map((item, i) => {
         const Wrapper = item.href ? 'a' : 'div';
         return (
